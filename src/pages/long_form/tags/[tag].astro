@@ -1,0 +1,34 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import BlogPost from "../../../components/BlogPost.astro";
+import { sortByDate } from "../../../components/sortbydate";
+import { buildTagPaths } from "../../../scripts/collections";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("long_form");
+  return buildTagPaths(entries, "long_form");
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+---
+
+<BaseLayout title={tag} is404Page={false}>
+  {
+    posts
+      .sort(sortByDate)
+      .map((post) => (
+        <BlogPost
+          url={`/long_form/${post.id}/`}
+          image={post.data?.image?.src || ""}
+          alt={post.data?.image?.alt || ""}
+          title={post.data?.title || ""}
+          description={post.data?.description || ""}
+          pubDate={post.data?.pubDate || ""}
+          positionx={post.data?.image?.positionx || ""}
+          positiony={post.data?.image?.positiony || ""}
+        />
+      ))
+  }
+</BaseLayout>

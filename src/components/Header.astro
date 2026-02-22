@@ -1,0 +1,63 @@
+---
+import Hamburger from "./Hamburger.tsx";
+import Navigation from "./Navigation.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+import { getImage } from "astro:assets";
+
+export interface Props {
+  is404Page?: boolean;
+}
+
+const { is404Page = false } = Astro.props;
+
+const favicon_avif = await getImage({
+  src: "https://cdn.erfianugrah.com/ea_favicon.png",
+  alt: "favicon",
+  width: 640,
+  height: 480,
+  decoding: "async",
+  format: "avif",
+});
+---
+
+<header class="mb-[20px] mt-[-10px]">
+  <nav class="flex items-center justify-between w-full h-[30px]">
+    {
+      !is404Page && (
+        <div class="flex items-center h-[30px]">
+          <a href="/" class="block">
+            <img
+              class="favicon dark:invert w-[30px] h-[30px]"
+              src={favicon_avif.src}
+              alt="Home"
+              width="30"
+              height="30"
+            />
+          </a>
+        </div>
+      )
+    }
+    <div class="flex items-center h-[30px] gap-2">
+      {
+        !is404Page && (
+          <>
+            <div class="flex items-center justify-center h-[30px] w-[30px]">
+              <ThemeToggle />
+            </div>
+            <div class="flex items-center justify-center h-[30px] w-[30px]">
+              <Hamburger client:idle />
+            </div>
+          </>
+        )
+      }
+    </div>
+  </nav>
+  {
+    !is404Page && (
+      <div class="absolute right-0 mt-2">
+        <Navigation />
+      </div>
+    )
+  }
+  <slot />
+</header>
