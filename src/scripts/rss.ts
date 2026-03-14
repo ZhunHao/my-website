@@ -8,6 +8,7 @@ function handlePageLoad(): void {
     "astrophotography",
     "the_atelier",
     "travel_photos",
+    "vignettes",
   ];
   // Normalize path by stripping leading/trailing slashes
   const currentPath = window.location.pathname.replace(/^\/|\/$/g, "");

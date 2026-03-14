@@ -10,6 +10,7 @@ export type CollectionName =
   | "astrophotography"
   | "the_atelier"
   | "travel_photos"
+  | "vignettes"
   | "authors"
   | "cv";
 

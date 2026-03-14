@@ -25,7 +25,7 @@ export async function parseTS(filePath) {
     // Instead of regular expressions, let's use a simpler approach
     // to identify collections by looking for known patterns
     const collections = {};
-    const collectionNames = ['astrophotography', 'the_atelier', 'travel_photos', 'authors', 'cv'];
+    const collectionNames = ['astrophotography', 'the_atelier', 'travel_photos', 'vignettes', 'authors', 'cv'];
     
     // Check for each known collection name in the content
     for (const name of collectionNames) {
@@ -53,7 +53,7 @@ export async function parseTS(filePath) {
       console.warn('No collections found in content.config.ts, using default set');
       
       // Add all known collections as fallback
-      ['astrophotography', 'the_atelier', 'travel_photos', 'authors', 'cv'].forEach(name => {
+      ['astrophotography', 'the_atelier', 'travel_photos', 'vignettes', 'authors', 'cv'].forEach(name => {
         collections[name] = {
           required: ['title', 'tags', 'author', 'description', 'pubDate'],
           optional: ['updatedDate', 'image', 'slug'],

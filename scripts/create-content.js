@@ -29,7 +29,7 @@ program
   .name('create-content')
   .description(chalk.blue('CLI to create content files for Revista with proper frontmatter'))
   .version('1.0.0')
-  .option('-t, --type <type>', 'content type (astrophotography, the_atelier, travel_photos, authors, cv)')
+  .option('-t, --type <type>', 'content type (astrophotography, the_atelier, travel_photos, vignettes, authors, cv)')
   .option('-d, --dry-run', 'preview frontmatter without creating the file')
   .option('--debug', 'show debug information')
   .option('--non-interactive', 'run in non-interactive mode with provided options')

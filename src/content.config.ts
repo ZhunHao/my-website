@@ -43,6 +43,11 @@ const travel_photos = defineCollection({
   schema: baseSchema,
 });
 
+const vignettes = defineCollection({
+  loader: glob({ pattern: "**\/[^_]*.mdx", base: "./src/content/vignettes" }),
+  schema: baseSchema,
+});
+
 const authors = defineCollection({
   loader: glob({ pattern: "**\/[^_]*.mdx", base: "./src/content/authors" }),
   schema: baseSchema,
@@ -134,6 +139,7 @@ export const collections = {
   astrophotography,
   the_atelier,
   travel_photos,
+  vignettes,
   authors,
   cv,
 };
