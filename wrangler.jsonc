@@ -11,11 +11,11 @@
   },
   "routes": [
     {
-      "pattern": "erfianugrah.com",
+      "pattern": "wongzhunhao.com",
       "custom_domain": true,
     },
     {
-      "pattern": "www.erfianugrah.com",
+      "pattern": "www.wongzhunhao.com",
       "custom_domain": true,
     },
   ],
