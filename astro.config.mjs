@@ -15,14 +15,14 @@ export default defineConfig({
   site:
     process.env.GITHUB_PAGES === "true"
       ? "https://erfianugrah.github.io"
-      : "https://www.erfianugrah.com",
+      : "https://www.wongzhunhao.com",
   base: process.env.GITHUB_PAGES === "true" ? "/revista-3" : undefined,
 
   image: {
     // responsiveStyles: true,
     // layout: "full-width",
     // objectFit: "contain",
-    domains: ["erfianugrah.com", "image.erfi.io"],
+    domains: ["wongzhunhao.com", "image.erfi.io"],
     service: {
       entrypoint: "astro/assets/services/sharp",
       config: {
