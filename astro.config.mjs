@@ -14,7 +14,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   site:
     process.env.GITHUB_PAGES === "true"
-      ? "https://erfianugrah.github.io"
+      ? "https://zhunhao.github.io"
       : "https://www.wongzhunhao.com",
   base: process.env.GITHUB_PAGES === "true" ? "/revista-3" : undefined,
 
@@ -22,7 +22,7 @@ export default defineConfig({
     // responsiveStyles: true,
     // layout: "full-width",
     // objectFit: "contain",
-    domains: ["wongzhunhao.com", "image.erfi.io"],
+    domains: ["wongzhunhao.com"],
     service: {
       entrypoint: "astro/assets/services/sharp",
       config: {
