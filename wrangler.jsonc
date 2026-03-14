@@ -12,11 +12,7 @@
   "routes": [
     {
       "pattern": "wongzhunhao.com",
-      "custom_domain": true,
-    },
-    {
-      "pattern": "www.wongzhunhao.com",
-      "custom_domain": true,
-    },
-  ],
+      "custom_domain": true
+    }
+  ]
 }
