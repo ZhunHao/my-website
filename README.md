@@ -133,8 +133,6 @@ graph TD
     - `getrandomimage.ts`: Random featured image selection for tag pages
     - `burgundy.ts`: 404 page quote rotation
     - `rss.ts`: RSS link visibility and URL management
-    - `since94.ts`: Years-since-1994 counter (used in MDX)
-
     - `undici-retry.ts`: HTTP fetch retry helper for build-time requests
     - `utils.ts`: Shared `shuffle()` and `formatDate()` utilities
     - `collections.ts`: Shared `buildDetailPaths()`, `buildTagPaths()`, `generateRss()` helpers
