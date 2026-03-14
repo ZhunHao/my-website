@@ -15,14 +15,14 @@ export default defineConfig({
   site:
     process.env.GITHUB_PAGES === "true"
       ? "https://zhunhao.github.io"
-      : "https://www.wongzhunhao.com",
+      : "https://wongzhunhao.com",
   base: process.env.GITHUB_PAGES === "true" ? "/revista-3" : undefined,
 
   image: {
     // responsiveStyles: true,
     // layout: "full-width",
     // objectFit: "contain",
-    domains: ["wongzhunhao.com", "www.wongzhunhao.com"],
+    domains: ["wongzhunhao.com"],
     service: {
       entrypoint: "astro/assets/services/sharp",
       config: {
