@@ -48,6 +48,11 @@ const zeitweilig = defineCollection({
   schema: baseSchema,
 });
 
+const astrophotography = defineCollection({
+  loader: glob({ pattern: "**\/[^_]*.mdx", base: "./src/content/astrophotography" }),
+  schema: baseSchema,
+});
+
 const authors = defineCollection({
   loader: glob({ pattern: "**\/[^_]*.mdx", base: "./src/content/authors" }),
   schema: baseSchema,
@@ -140,6 +145,7 @@ export const collections = {
   short_form,
   long_form,
   zeitweilig,
+  astrophotography,
   authors,
   cv,
 };

@@ -11,6 +11,7 @@ export type CollectionName =
   | "short_form"
   | "long_form"
   | "zeitweilig"
+  | "astrophotography"
   | "authors"
   | "cv";
 

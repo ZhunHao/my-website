@@ -29,7 +29,7 @@ program
   .name('create-content')
   .description(chalk.blue('CLI to create content files for Revista with proper frontmatter'))
   .version('1.0.0')
-  .option('-t, --type <type>', 'content type (muses, short_form, long_form, zeitweilig, authors, cv)')
+  .option('-t, --type <type>', 'content type (muses, short_form, long_form, zeitweilig, astrophotography, authors, cv)')
   .option('-d, --dry-run', 'preview frontmatter without creating the file')
   .option('--debug', 'show debug information')
   .option('--non-interactive', 'run in non-interactive mode with provided options')
@@ -155,7 +155,7 @@ async function main() {
           type: 'input',
           name: 'author',
           message: `${chalk.cyan('Author:')}`,
-          default: 'Erfi Anugrah'
+          default: 'Zhun Hao'
         });
       } else if (field === 'description') {
         questions.push({
@@ -286,7 +286,10 @@ async function main() {
     let imageFormatted = '';
     if (frontmatter.image) {
       const props = Object.entries(frontmatter.image)
-        .map(([key, value]) => `${key}: ${value}`)
+        .map(([key, value]) => {
+          if (key === 'positionx' || key === 'positiony') return `${key}: "${value}"`;
+          return `${key}: ${value}`;
+        })
         .join(' , ');
       imageFormatted = `{ ${props} }`;
     }

@@ -42,7 +42,7 @@ node scripts/create-content.js
 
 The interactive mode will guide you through the process of creating a new content file with a series of prompts:
 
-1. Select content type (muses, short_form, long_form, zeitweilig, authors, cv)
+1. Select content type (muses, short_form, long_form, zeitweilig, astrophotography, authors, cv)
 2. Enter title (required)
 3. Enter tags (comma-separated, defaults to the collection type)
 4. Enter author name (defaults to "Erfi Anugrah")
@@ -146,6 +146,7 @@ The tool automatically detects all content collections defined in `content.confi
 - **short_form** - Brief posts
 - **long_form** - In-depth articles
 - **zeitweilig** - Ephemeral content
+- **astrophotography** - Astrophotography collections with image frontmatter
 - **authors** - Contributor profiles
 - **cv** - Professional resume data (complex schema)
 
@@ -158,6 +159,7 @@ The tool automatically detects all content collections defined in `content.confi
      short_form
      long_form
      zeitweilig
+     astrophotography
      authors
      cv
    ```
@@ -166,7 +168,7 @@ The tool automatically detects all content collections defined in `content.confi
    ```
    Title: Stockholm: Urban Reflections
    Tags (comma-separated): sweden, architecture, street, reflection
-   Author (default: Erfi Anugrah): 
+   Author (default: Zhun Hao): 
    Description: A winter wander through Stockholm's glass-filled business district
    ```
 
