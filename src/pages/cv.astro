@@ -30,22 +30,22 @@ const bodyMatch = rawHtml.match(/<body>([\s\S]*)<\/body>/);
 const cvBody = bodyMatch?.[1]?.trim() ?? "";
 
 // Page metadata
-const pageTitle = "ERFI ANUGRAH | CV";
-const description = "Photographer | Writer | Customer Solutions Engineer";
-const site_name = "stoicopa";
+const pageTitle = "WONG ZHUN HAO | CV";
+const description = "Photographer | Engineer";
+const site_name = "sidequests";
 
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
-  name: "Erfi Anugrah",
-  jobTitle: "Senior Customer Solutions Engineer",
+  name: "WONG ZHUN HAO",
+  jobTitle: "Engineer",
   url: new URL(Astro.url.pathname, Astro.site).href,
   sameAs: [
-    "https://github.com/erfianugrah",
-    "https://linkedin.com/in/erfianugrah",
-    "https://erfi.dev",
+    "https://github.com/wongzhunhao",
+    "https://linkedin.com/in/wongzhunhao",
+    "https://wongzhunhao.com",
   ],
-  workLocation: { "@type": "Place", name: "Cloudflare" },
+  workLocation: { "@type": "Place", name: "NTU" },
   knowsAbout: ["Web Development", "Cloud Computing", "Network Security"],
 };
 ---
