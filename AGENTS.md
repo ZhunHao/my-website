@@ -118,6 +118,5 @@ Shared route helpers in `src/scripts/collections.ts`:
 ## Deployment
 - **Cloudflare Workers**: static asset serving via `wrangler.jsonc`; entry at `src/index.ts`
 - **GitHub Pages**: set `GITHUB_PAGES=true` during build for correct base path
-- **Docker**: `caddy:2.9.1-alpine` base image (see `Dockerfile`)
 - Pagefind indexes `dist/` after build; runs automatically via `postbuild` script
 - Secrets belong in platform environment variables; never commit `.env`

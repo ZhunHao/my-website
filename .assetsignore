@@ -41,9 +41,6 @@ lerna-debug.log*
 # Source maps (optional - remove if you want them uploaded)
 *.map
 
-# Docker
-Dockerfile
-.dockerignore
 compose.yaml
 
 # Scripts

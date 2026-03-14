@@ -8,7 +8,6 @@
   <img alt="Bun" src="https://img.shields.io/badge/Bun-Latest-F9F1E1.svg?logo=bun&logoColor=black" />
   <br/>
   <img alt="GitHub CI/CD" src="https://img.shields.io/badge/CI%2FCD-GitHub_Actions-2088FF.svg?logo=github-actions&logoColor=white" />
-  <img alt="Docker" src="https://img.shields.io/badge/Docker-Enabled-2496ED.svg?logo=docker&logoColor=white" />
   <img alt="Cloudflare" src="https://img.shields.io/badge/Cloudflare-Deployed-F38020.svg?logo=cloudflare&logoColor=white" />
   <img alt="Deno Deploy" src="https://img.shields.io/badge/Deno-Deployed-000000.svg?logo=deno&logoColor=white" />
   <img alt="GitHub Pages" src="https://img.shields.io/badge/GitHub%20Pages-Deployed-222222.svg?logo=github&logoColor=white" />
@@ -34,7 +33,6 @@ The project supports multiple deployment targets with optimized builds for each 
 - **Layouts:** `src/layouts/README.md`
 - **Pages:** `src/pages/README.md`
 - **Content Collections:** `src/content/README.md`
-- **Docker:** `docs/docker.md`
 
 ## Project Structure
 
@@ -120,7 +118,6 @@ graph TD
   - Architecture and implementation documentation:
     - [Technical Architecture](src/README.md): Component structure, state management, and design patterns
     - [Performance Optimization](docs/performance.md): Techniques used for site speed optimization
-    - [Docker Implementation](docs/docker.md): Container configuration and deployment
     - [CI/CD Implementation](.github/CICD.md): Build and deployment automation
   - `content.config.ts`: Configuration file for content collections using Astro's glob loader pattern
   - `styles/`: CSS files for styling
@@ -707,74 +704,13 @@ The GitHub Actions workflow in `.github/workflows/deploy.yml` handles deployment
    - Employs the `build:github-pages` npm script for proper routing
    - Maintains full compatibility with other deployment platforms
 
-5. **Docker Handling**:
-   - Builds a multi-architecture Docker image for broader compatibility
-   - Pushes to Docker Hub for container-based deployments
-   - Signs the image with Cosign for security verification
 
-6. **Cache Management**:
+5. **Cache Management**:
    - Purges Cloudflare's edge cache after each deployment
 
-## Docker Setup
-
-The project includes Docker support for containerized deployment using Caddy as the web server.
-
-### Quick Start
-
-```bash
-# Build the container
-docker build -t revista:latest .
-
-# Run the container
-docker run -p 8080:80 revista:latest
-
-# Or use docker compose
-docker compose up -d
-```
-
-### Dockerfile
-
-```dockerfile
-FROM caddy:2.9.1-alpine
-
-WORKDIR /usr/share/caddy
-
-COPY ./dist .
-COPY Caddyfile /etc/caddy/Caddyfile
-
-RUN chown -R root:root /usr/share/caddy && \
-    chmod -R 755 /usr/share/caddy
-
-EXPOSE 80
-
-CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
-```
-
-The Caddyfile is straightforward — Cloudflare handles cache headers and security at the edge, so Caddy just serves files with zstd/gzip compression, precompressed asset delivery, structured JSON logging, and a Prometheus metrics endpoint. See [docs/docker.md](docs/docker.md) for the full configuration.
-
-### Multi-Architecture Support
-
-The CI/CD pipeline builds for `linux/amd64`, `linux/arm64`, `linux/arm/v6`, and `linux/arm/v7`. For manual multi-platform builds:
-
-```bash
-docker buildx create --name mybuilder --use --driver docker-container
-docker buildx build \
-  --platform linux/arm64,linux/amd64,linux/arm/v6,linux/arm/v7 \
-  -t [repo]/[image-name]:[tag] . \
-  --push
-```
-
-### Key Details
-
-1. Uses Caddy 2.9.1 on Alpine Linux (~40MB image)
-2. Proper file permissions for security
-3. Serves precompressed assets (zstd, brotli, gzip) for fast delivery
-4. Exposes port 80 (Cloudflare handles HTTPS in production)
-5. Volume mounts for `/data` and `/config` persist Caddy state across restarts
 
 ## Security Measures
 
-1. **Docker Image Signing**: The CI/CD pipeline signs Docker images with Cosign to prevent tampering.
 
 2. **Content Security**: The RSS feed generation uses `sanitize-html` to prevent XSS vulnerabilities.
 
@@ -821,7 +757,7 @@ To start working with this project:
 1. Build for production:
 
    ```bash
-   # Standard build (for Cloudflare, Deno, Docker)
+   # Standard build (for Cloudflare, Deno)
    bun run build
 
    # GitHub Pages specific build (with base path)
@@ -850,7 +786,6 @@ The project supports several deployment methods:
 1. Cloudflare Workers (primary)
 2. Deno Deploy
 3. GitHub Pages
-4. Docker container (deployable to any container platform)
 
 ### Deployment Secrets & Tokens
 
@@ -859,7 +794,6 @@ The project supports several deployment methods:
 | Cloudflare Workers | `CLOUDFLARE_WRANGLER_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_ZONE_ID`, `CLOUDFLARE_CACHE_PURGE_TOKEN`, `CLOUDFLARE_ZONE_NAME`, `CLOUDFLARE_WWW` | Wrangler deploy + cache purge hosts              |
 | Deno Deploy        | _None referenced in the workflow_                                                                                                                    | Uses `deployctl` with public project settings    |
 | GitHub Pages       | _None beyond repository permissions_                                                                                                                 | Build uses `build:github-pages` base/path config |
-| Docker Hub         | `DOCKER_USERNAME`, `DOCKER_REGISTRY_TOKEN`                                                                                                           | Used for pushing versioned images                |
 
 ## Contributing
 

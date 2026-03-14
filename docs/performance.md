@@ -91,27 +91,6 @@ This configuration:
 
 The site is deployed to Cloudflare Workers with Static Assets for edge caching:
 
-### Caddy Configuration
-
-The Docker container uses Caddy with zstd + gzip compression and precompressed asset delivery:
-
-```
-:80 {
-    encode zstd gzip
-    root * /usr/share/caddy
-    try_files {path} {path}/ /404.html
-    file_server {
-        precompressed zstd br gzip
-    }
-}
-```
-
-Benefits:
-
-- zstd compression for better ratios than gzip alone
-- Precompressed asset serving (if `.zst`, `.br`, or `.gz` files exist, Caddy serves those directly)
-- No explicit cache/security headers needed - Cloudflare handles that at the edge
-
 ### Edge Deployment
 
 The project deploys to multiple edge platforms:

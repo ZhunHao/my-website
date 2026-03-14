@@ -6,7 +6,7 @@
 
 ## Overview
 
-This project uses GitHub Actions for its CI/CD pipeline, automating builds and deployments to multiple targets including Cloudflare Workers, Deno Deploy, GitHub Pages, and Docker Hub. The pipeline is optimized for speed with parallel deployments and smart caching strategies.
+This project uses GitHub Actions for its CI/CD pipeline, automating builds and deployments to multiple targets including Cloudflare Workers, Deno Deploy, GitHub Pages. The pipeline is optimized for speed with parallel deployments and smart caching strategies.
 
 ## Workflow Architecture
 
@@ -19,7 +19,6 @@ graph TD
     D --> E1["Cloudflare Workers"]
     D --> E2["Deno Deploy"]
     D --> E3["GitHub Pages"]
-    D --> E4["Docker Hub"]
     E1 --> F["Purge Cache"]
 ```
 
@@ -31,7 +30,7 @@ The primary workflow file is `.github/workflows/deploy.yml`, which orchestrates 
 
 The build process supports multiple deployment targets with different configurations:
 
-### Standard Build (Shared by Workers, Deno, Docker)
+### Standard Build (Shared by Workers, Deno)
 
 ```yaml
 jobs:
@@ -218,152 +217,12 @@ Key features:
 5. **Concurrency Control**: Prevents conflicting deployments with proper job isolation
 6. **Latest GitHub Actions**: Uses official Pages Actions (configure-pages@v5, upload-pages-artifact@v3, deploy-pages@v4)
 
-### Docker Deployment
-
-```yaml
-build-and-push-docker:
-  needs: build-revista
-  runs-on: ubuntu-latest
-  outputs:
-    digest: ${{ steps.build.outputs.digest }}
-    tags: ${{ steps.meta.outputs.tags }}
-  steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        sparse-checkout: |
-          Dockerfile
-          Caddyfile
-
-    - name: Download build artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: dist
-        path: dist
-
-    - name: Docker metadata
-      id: meta
-      uses: docker/metadata-action@v5
-      with:
-        images: erfianugrah/revista-4
-        tags: |
-          type=ref,event=branch
-          type=ref,event=pr
-          type=semver,pattern={{version}}
-          type=semver,pattern={{major}}.{{minor}}
-          type=semver,pattern={{major}}
-          type=sha
-          type=raw,value=latest,enable={{is_default_branch}}
-
-    - name: Build and push Docker image
-      id: build
-      uses: docker/build-push-action@v6
-      with:
-        context: .
-        platforms: linux/amd64,linux/arm64,linux/arm/v6,linux/arm/v7
-        push: true
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
-        provenance: true
-        sbom: true
-```
-
-Key aspects:
-
-1. **Modern Semantic Versioning**: Uses `docker/metadata-action` for automatic tag generation from GitHub releases
-2. **Multi-Architecture Builds**: Supports AMD64, ARM64, ARMv6, and ARMv7 platforms
-3. **Sparse Checkout**: Only checks out required files (Dockerfile, Caddyfile) for faster builds
-4. **Security Features**: Includes Cosign signing, SBOM, and provenance attestations
-5. **GitHub Actions Cache**: Leverages GHA cache for faster subsequent builds
-6. **Automatic Tagging**: Creates multiple tags from a single release (e.g., `v1.2.3` → `1.2.3`, `1.2`, `1`, `latest`)
-
-#### Docker Versioning
-
-When you create a GitHub release with tag `v1.2.3`, the workflow automatically creates:
-
-- `erfianugrah/revista-4:1.2.3` (full version)
-- `erfianugrah/revista-4:1.2` (major.minor)
-- `erfianugrah/revista-4:1` (major)
-- `erfianugrah/revista-4:latest` (if on main branch)
-- `erfianugrah/revista-4:sha-<sha>` (commit SHA for tracking)
-
-All images are signed with Cosign for supply chain security.
-
-## Secret Management
-
-The workflow uses GitHub Secrets for sensitive information:
-
-- `CLOUDFLARE_WRANGLER_TOKEN` - Authentication for Cloudflare Workers deployment
-- `CLOUDFLARE_ACCOUNT_ID` - Cloudflare account identifier
-- `CLOUDFLARE_ZONE_ID` - Cloudflare zone for cache purging
-- `CLOUDFLARE_CACHE_PURGE_TOKEN` - Token for purging Cloudflare cache
-- `CLOUDFLARE_ZONE_NAME` - Primary domain name (e.g., erfianugrah.com)
-- `CLOUDFLARE_WWW` - WWW variant domain (e.g., www.erfianugrah.com)
-- `DOCKER_USERNAME` - Docker Hub account username
-- `DOCKER_REGISTRY_TOKEN` - Authentication token for Docker Hub
-
-**GitHub Pages Specific:**
-
-- No additional secrets required (uses built-in OIDC with `id-token: write`)
-- Environment variable `GITHUB_PAGES=true` automatically set during GitHub Pages build
-
-**Note:** Deno Deploy authentication is handled via OIDC (no token required).
-
-## Workflow Triggers
-
-The workflow runs automatically on:
-
-```yaml
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-  release:
-    types: [published]
-```
-
-This ensures:
-
-1. **Push to main**: Automatic deployment of latest changes to all targets
-2. **Pull Requests**: Build verification for PRs (no deployment)
-3. **GitHub Releases**: Triggers semantic versioning for Docker images (e.g., `v1.2.3` → multiple tags)
-
-## Retry Logic and Error Handling
-
-The build job includes built-in retry logic for transient errors:
-
-```yaml
-- name: Build project with retry
-  env:
-    MAX_ATTEMPTS: 3
-    RETRY_INTERVAL: 30
-  run: |
-    attempt=1
-    until bun run build || [ $attempt -eq $MAX_ATTEMPTS ]; do
-      echo "Build attempt $attempt failed. Retrying in $RETRY_INTERVAL seconds..."
-      sleep $RETRY_INTERVAL
-      attempt=$((attempt + 1))
-    done
-```
-
-This improves reliability by automatically retrying build operations that might fail due to temporary issues.
-
-## Performance Considerations
-
-The CI/CD pipeline is optimized for speed through multiple strategies:
-
 ### Optimization Strategies
 
 1. **Smart Caching**: Cache keys only invalidate on actual dependency/config changes (not on every source file change)
 2. **Parallel Deployments**: Web deployments (Workers, Deno, Pages) run simultaneously
-3. **Decoupled Docker Pipeline**: Docker build runs in parallel and doesn't block web deployments
-4. **Sparse Checkouts**: Docker job only checks out required files (Dockerfile, Caddyfile)
 5. **Artifact Sharing**: Build once, deploy to multiple targets from shared artifact
 6. **Bun Runtime**: Significantly faster than npm for installation and building
-7. **GitHub Actions Cache**: Leverages GHA cache for Docker layers and dependencies
 
 ### Pipeline Timing
 
@@ -379,20 +238,4 @@ build-revista:              ~2 min (optimized caching)
 Total critical path:        ~5 min ⚡
 ```
 
-**Docker Pipeline (Parallel, Non-Blocking):**
-
-```
-build-revista:              ~2 min
-  └─ build-and-push-docker: ~8-10 min (4 platforms)
-      └─ inspect-image:     ~10 sec
-          └─ sign-image:    ~2 min (Cosign)
-─────────────────────────────────────
-Total Docker path:          ~12 min (parallel)
-```
-
-**Key Performance Improvements:**
-
-- **Users see updates:** ~5 minutes after push (previously ~12-15 min)
-- **Cache purges:** Immediately after web deployments (doesn't wait for Docker)
-- **Docker images:** Build in background without blocking users
 - **Overall speedup:** 3x faster for critical web deployment path
