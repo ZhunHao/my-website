@@ -6,8 +6,8 @@ import { sortByDate } from "../../../components/sortByDate";
 import { buildTagPaths } from "../../../scripts/collections";
 
 export async function getStaticPaths() {
-  const entries = await getCollection("muses");
-  return buildTagPaths(entries, "muses");
+  const entries = await getCollection("travel_photos");
+  return buildTagPaths(entries, "travel_photos");
 }
 
 const { tag } = Astro.params;

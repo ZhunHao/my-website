@@ -7,11 +7,9 @@ const parser = new MarkdownIt();
 
 /** Valid content collection names for use with getCollection(). */
 export type CollectionName =
-  | "muses"
-  | "short_form"
-  | "long_form"
-  | "zeitweilig"
   | "astrophotography"
+  | "the_atelier"
+  | "travel_photos"
   | "authors"
   | "cv";
 

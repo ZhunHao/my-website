@@ -4,7 +4,7 @@ import MarkdownPostLayout from "../../layouts/MarkdownPostLayout.astro";
 import { buildDetailPaths } from "../../scripts/collections";
 
 export async function getStaticPaths() {
-  const entries = await getCollection("muses");
+  const entries = await getCollection("the_atelier");
   return buildDetailPaths(entries);
 }
 
@@ -15,7 +15,7 @@ const { Content, remarkPluginFrontmatter } = await render(entry);
 <MarkdownPostLayout
   frontmatter={entry.data}
   currentId={entry.id}
-  collection="muses"
+  collection="the_atelier"
 >
   <p class="prose prose-slate dark:prose-invert italic no-underline">
     {remarkPluginFrontmatter.minutesRead}

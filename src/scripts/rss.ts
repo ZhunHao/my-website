@@ -4,11 +4,10 @@
  */
 function handlePageLoad(): void {
   const collections = [
-    "short_form",
-    "long_form",
-    "muses",
-    "zeitweilig",
     "authors",
+    "astrophotography",
+    "the_atelier",
+    "travel_photos",
   ];
   // Normalize path by stripping leading/trailing slashes
   const currentPath = window.location.pathname.replace(/^\/|\/$/g, "");

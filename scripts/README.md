@@ -42,7 +42,7 @@ node scripts/create-content.js
 
 The interactive mode will guide you through the process of creating a new content file with a series of prompts:
 
-1. Select content type (muses, short_form, long_form, zeitweilig, astrophotography, authors, cv)
+1. Select content type (astrophotography, the_atelier, travel_photos, authors, cv)
 2. Enter title (required)
 3. Enter tags (comma-separated, defaults to the collection type)
 4. Enter author name (defaults to "Erfi Anugrah")
@@ -147,6 +147,8 @@ The tool automatically detects all content collections defined in `content.confi
 - **long_form** - In-depth articles
 - **zeitweilig** - Ephemeral content
 - **astrophotography** - Astrophotography collections with image frontmatter
+- **the_atelier** - The Atelier collections
+- **travel_photos** - Travel photography collections
 - **authors** - Contributor profiles
 - **cv** - Professional resume data (complex schema)
 
@@ -155,11 +157,9 @@ The tool automatically detects all content collections defined in `content.confi
 1. Select content type:
    ```
    ? Select content type: (Use arrow keys)
-   > muses
-     short_form
-     long_form
-     zeitweilig
-     astrophotography
+   > astrophotography
+     the_atelier
+     travel_photos
      authors
      cv
    ```

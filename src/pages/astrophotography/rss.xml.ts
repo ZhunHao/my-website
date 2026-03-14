@@ -3,6 +3,6 @@ import { generateRss } from "../../scripts/collections";
 import type { APIContext } from "astro";
 
 export async function GET(context: APIContext) {
-  const entries = await getCollection("muses");
-  return generateRss(entries, "muses", context);
+  const entries = await getCollection("astrophotography");
+  return generateRss(entries, "astrophotography", context);
 }

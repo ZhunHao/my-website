@@ -28,28 +28,18 @@ const baseSchema = z.object({
   updatedDate: z.coerce.date().optional(),
 });
 
-const muses = defineCollection({
-  loader: glob({ pattern: "**\/[^_]*.mdx", base: "./src/content/muses" }),
-  schema: baseSchema,
-});
-
-const short_form = defineCollection({
-  loader: glob({ pattern: "**\/[^_]*.mdx", base: "./src/content/short_form" }),
-  schema: baseSchema,
-});
-
-const long_form = defineCollection({
-  loader: glob({ pattern: "**\/[^_]*.mdx", base: "./src/content/long_form" }),
-  schema: baseSchema,
-});
-
-const zeitweilig = defineCollection({
-  loader: glob({ pattern: "**\/[^_]*.mdx", base: "./src/content/zeitweilig" }),
-  schema: baseSchema,
-});
-
 const astrophotography = defineCollection({
   loader: glob({ pattern: "**\/[^_]*.mdx", base: "./src/content/astrophotography" }),
+  schema: baseSchema,
+});
+
+const the_atelier = defineCollection({
+  loader: glob({ pattern: "**\/[^_]*.mdx", base: "./src/content/the_atelier" }),
+  schema: baseSchema,
+});
+
+const travel_photos = defineCollection({
+  loader: glob({ pattern: "**\/[^_]*.mdx", base: "./src/content/travel_photos" }),
   schema: baseSchema,
 });
 
@@ -141,11 +131,9 @@ const cv = defineCollection({
 });
 
 export const collections = {
-  muses,
-  short_form,
-  long_form,
-  zeitweilig,
   astrophotography,
+  the_atelier,
+  travel_photos,
   authors,
   cv,
 };
