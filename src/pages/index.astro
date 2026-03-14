@@ -1,0 +1,100 @@
+---
+import Homepage from "../components/Homepage.astro";
+import { getCollection } from "astro:content";
+import { getImage } from "astro:assets";
+
+const collections = ["long_form", "short_form", "muses", "zeitweilig"] as const;
+let allImages: { large: string[]; medium: string[]; small: string[] } = {
+  large: [],
+  medium: [],
+  small: [],
+};
+let allAlts: string[] = [];
+let allUrls: string[] = [];
+
+for (const collection of collections) {
+  const allContent = await getCollection(collection);
+  const postsWithImages = allContent.filter(
+    (post) => post.data.image?.src && post.data.image?.alt,
+  );
+
+  const imagePromises = postsWithImages.map(async (post) => {
+    const image = post.data.image!;
+    const [largeImage, mediumImage, smallImage] = await Promise.all([
+      getImage({
+        src: image.src,
+        alt: image.alt,
+        width: 1920,
+        height: 1080,
+        decoding: "async",
+        format: "avif",
+        quality: 65,
+      }),
+      getImage({
+        src: image.src,
+        alt: image.alt,
+        width: 1280,
+        height: 720,
+        decoding: "async",
+        format: "avif",
+        quality: 65,
+      }),
+      getImage({
+        src: image.src,
+        alt: image.alt,
+        width: 854,
+        height: 480,
+        decoding: "async",
+        format: "avif",
+        quality: 65,
+      }),
+    ]);
+
+    return {
+      large: largeImage.src,
+      medium: mediumImage.src,
+      small: smallImage.src,
+      alt: image.alt,
+      url: `/${collection}/${post.id}`,
+    };
+  });
+
+  const results = await Promise.all(imagePromises);
+
+  results.forEach((result) => {
+    allImages.large.push(result.large);
+    allImages.medium.push(result.medium);
+    allImages.small.push(result.small);
+    allAlts.push(result.alt);
+    allUrls.push(result.url);
+  });
+}
+
+const imageSizes = {
+  width: {
+    large: 1920,
+    medium: 1280,
+    small: 854,
+  },
+  height: {
+    large: 1080,
+    medium: 720,
+    small: 480,
+  },
+};
+---
+
+{
+  allImages.large.length > 0 ? (
+    <Homepage
+      title="Home"
+      images={JSON.stringify(allImages)}
+      alt={JSON.stringify(allAlts)}
+      urls={JSON.stringify(allUrls)}
+      width={imageSizes.width}
+      height={imageSizes.height}
+    />
+  ) : (
+    <p>No images found</p>
+  )
+}

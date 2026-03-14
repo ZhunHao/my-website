@@ -1,0 +1,19 @@
+---
+import ThemeToggleComponent from "./ThemeToggle";
+---
+
+<ThemeToggleComponent client:idle />
+
+<style is:global>
+  body,
+  .theme-transition {
+    transition:
+      color 0.3s ease,
+      background-color 0.3s ease;
+  }
+</style>
+
+<script>
+  import { initTheme } from "../scripts/theme.ts";
+  initTheme();
+</script>
