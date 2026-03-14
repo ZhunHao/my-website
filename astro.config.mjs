@@ -22,7 +22,7 @@ export default defineConfig({
     // responsiveStyles: true,
     // layout: "full-width",
     // objectFit: "contain",
-    domains: ["wongzhunhao.com"],
+    domains: ["wongzhunhao.com", "www.wongzhunhao.com"],
     service: {
       entrypoint: "astro/assets/services/sharp",
       config: {
