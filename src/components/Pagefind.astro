@@ -35,7 +35,18 @@
 
     searchButton?.addEventListener("click", () => {
       dialog?.showModal();
-      document.querySelector<HTMLInputElement>("#search input")?.focus();
+
+      if (!pagefindUI) {
+        pagefindUI = new PagefindUI({
+          element: "#search",
+          showSubResults: true,
+          resetStyles: false,
+        });
+      }
+
+      setTimeout(() => {
+        document.querySelector<HTMLInputElement>("#search input")?.focus();
+      }, 50);
     });
 
     closeButton?.addEventListener("click", () => {
@@ -47,16 +58,6 @@
       if (event.target === dialog) {
         dialog.close();
       }
-    });
-
-    if (pagefindUI) {
-      pagefindUI.destroy();
-    }
-
-    pagefindUI = new PagefindUI({
-      element: "#search",
-      showSubResults: true,
-      resetStyles: false,
     });
   });
 </script>
