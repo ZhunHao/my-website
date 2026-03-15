@@ -1,15 +1,27 @@
 ---
-title: The High-Altitude Hello 
-slug: the-high-altitude-hello 
+title: The Sky's Sketchbook
+slug: the-skys-sketchbook
 pubDate: 2026-03-14T12:06:24.005Z
-tags: [ 'the_atelier' ]
-author: "Zhun Hao"
+tags:
+  - the_atelier
+author: Zhun Hao
 image:
   src: https://www.wongzhunhao.com/the_atelier/cloud-wave_11-11-2025_01.avif
-  alt: "A fluffy white cloud in a blue sky, digitally edited with a simple black-and-white hand-drawn face (large eyes and a wide grin) and a single long arm waving toward the viewer."
-  positionx: "60"
-  positiony: "60"
-description: "A friendly cumulus greeting over the rooftops. Sometimes the sky just wants to be seen, so I gave it a hand."
+  alt: A fluffy white cloud in a blue sky, digitally edited with a simple black-and-white hand-drawn face (large eyes and a wide grin) and a single long arm waving toward the viewer.
+  positionx: "50"
+  positiony: "50"
+description: A friendly cumulus greeting over the rooftops. Sometimes the sky just wants to be seen, so I gave it a hand.
+updatedDate: 2026-03-15T14:14:00Z
 ---
+Sometimes you look up and see more than just cloud, you see a story unfolding.
+From a mother cat leading her kittens across the horizon to a lone duck taking a cosmic flight, these are the moments where the sky feels like a giant sketchbook. 
+I just added the ink.
 
-Enter your content here.
+---
+import MasonryLayout from '../../components/Masonry.astro';
+
+<MasonryLayout images={[
+    { src: "https://www.wongzhunhao.com/the_atelier/cloud-wave_11-11-2025_01.avif", alt: "A fluffy white cloud in a blue sky, digitally edited with a simple black-and-white hand-drawn face (large eyes and a wide grin) and a single long arm waving toward the viewer." },
+    { src: "https://www.wongzhunhao.com/the_atelier/cloud-cat-family_11-11-2025_01.avif", alt: "A wide landscape shot of a bright sky where a large cloud is edited to look like a cat with ears, paws, and a pink tongue, followed by three smaller clouds edited with simple black smiley faces, floating above a distant city skyline." },
+    { src: "https://www.wongzhunhao.com/the_atelier/cloud-duck-flight_11-11-2025_01.avif", alt: "A vertical shot looking up at a wispy white cloud shaped like a bird, enhanced with orange hand-drawn wings, webbed feet, and a beak, appearing to soar through a deep blue sky above a building roof." },
+]} />
