@@ -10,12 +10,12 @@ Content Collections are a powerful feature in Astro for organizing and managing 
 
 ## Collection Structure
 
-The `src/content/` directory contains multiple collections, each focused on a specific content type:
+The `src/content/` directory contains six collections, each focused on a specific content type:
 
-- **muses/**: Photography-focused content
-- **short_form/**: Brief blog posts and updates
-- **long_form/**: In-depth articles and essays
-- **zeitweilig/**: Temporary or ephemeral content
+- **astrophotography/**: Astrophotography content and celestial images
+- **the_atelier/**: In-depth articles and essays from the atelier
+- **travel_photos/**: Travel photography and travel-related content
+- **vignettes/**: Short vignettes and brief narrative pieces
 - **authors/**: Author information and profiles
 - **cv/**: Resume and professional information
 
@@ -46,7 +46,7 @@ const baseSchema = z.object({
 
 const short_form = defineCollection({
   // Modern Astro v6.0.1 collection pattern
-  loader: glob({ pattern: "**\/[^_]*.mdx", base: "./src/content/short_form" }),
+  loader: glob({ pattern: "**\/[^_]*.mdx", base: "./src/content/astrophotography" }),
   schema: baseSchema,
 });
 ```
@@ -57,19 +57,18 @@ Each content file (using .mdx format) includes frontmatter that must match the d
 
 ```yaml
 ---
-title: Sisyphean
-pubDate: 2020-12-23T08:10:57.000Z
-updatedDate: 2022-03-17T10:37:55.000Z
-tags: ["muses"]
-author: "Erfi Anugrah"
+title: 22 Degree Halo
+pubDate: 2025-08-25T12:00:00.000Z
+tags: ["astronomy", "astrophotography"]
+author: "Wong Zhun Hao"
 image:
   {
-    src: https://image.erfi.io/sisyphean_1.png,
-    alt: sisyphean_1,
-    positionx: 20%,
+    src: https://cdn.example.com/halo_22_degree.jpg,
+    alt: 22 degree halo luminous ring,
+    positionx: 50%,
     positiony: 50%,
   }
-description: It started with an idea or rather an intention to create something but certain things never come to light. Or rather in our attempt to keep it in the shadows, it would still be inadvertently found. I guess if and when this does go out, that would probably be an ironic statement to start off with.
+description: A photographic capture and analysis of the geometric luminous 22-degree halo phenomenon observed on August 25, 2025.
 ---
 <!-- Content goes here -->
 ```
@@ -91,7 +90,7 @@ Content collections are used throughout the site's components and layouts. The v
 ---
 // Example from a page component
 import { getCollection } from "astro:content";
-const posts = await getCollection("short_form");
+const posts = await getCollection("astrophotography");
 ---
 
 {
