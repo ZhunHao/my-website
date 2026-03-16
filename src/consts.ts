@@ -5,7 +5,7 @@ export const SITE_DESCRIPTION = "An overly engineered scrapbook for my expensive
 export const SITE_AUTHOR = "Wong Zhun Hao";
 
 /** CDN base URLs for remote images. */
-export const CDN_FAVICON_URL = "https://www.wongzhunhao.com/core/zh_favicon.avif";
+export const CDN_FAVICON_URL = "https://www.wongzhunhao.com/core/zh_favicon.png";
 export const CDN_COVER_IMAGE_URL = "https://www.wongzhunhao.com/core/fallback_image.avif";
 
 /** Social media links. */
