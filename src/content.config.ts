@@ -29,7 +29,10 @@ const baseSchema = z.object({
 });
 
 const astrophotography = defineCollection({
-  loader: glob({ pattern: "**\/[^_]*.mdx", base: "./src/content/astrophotography" }),
+  loader: glob({
+    pattern: "**\/[^_]*.mdx",
+    base: "./src/content/astrophotography",
+  }),
   schema: baseSchema,
 });
 
@@ -39,7 +42,10 @@ const the_atelier = defineCollection({
 });
 
 const travel_photos = defineCollection({
-  loader: glob({ pattern: "**\/[^_]*.mdx", base: "./src/content/travel_photos" }),
+  loader: glob({
+    pattern: "**\/[^_]*.mdx",
+    base: "./src/content/travel_photos",
+  }),
   schema: baseSchema,
 });
 

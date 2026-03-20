@@ -85,17 +85,16 @@ const websiteSchema = {
 };
 
 // Build breadcrumb from URL path segments
-const pathSegments = Astro.url.pathname
-  .split("/")
-  .filter((s) => s.length > 0);
+const pathSegments = Astro.url.pathname.split("/").filter((s) => s.length > 0);
 const breadcrumbItems = [
   { "@type": "ListItem", position: 1, name: "Home", item: baseUrl },
   ...pathSegments.map((segment, i) => ({
     "@type": "ListItem",
     position: i + 2,
-    name: i === pathSegments.length - 1 && title
-      ? title
-      : segment.replace(/[-_]/g, " "),
+    name:
+      i === pathSegments.length - 1 && title
+        ? title
+        : segment.replace(/[-_]/g, " "),
     item: `${baseUrl}/${pathSegments.slice(0, i + 1).join("/")}`,
   })),
 ];
@@ -151,7 +150,10 @@ const formattedUpdatedDate = updatedDate
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title || SITE_TITLE} />
-    <meta name="twitter:description" content={description || SITE_DESCRIPTION} />
+    <meta
+      name="twitter:description"
+      content={description || SITE_DESCRIPTION}
+    />
     <meta
       name="twitter:image"
       content={image || `${baseUrl}${metaImage?.src}`}

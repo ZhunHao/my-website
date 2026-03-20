@@ -46,7 +46,10 @@ const baseSchema = z.object({
 
 const short_form = defineCollection({
   // Modern Astro v6.0.1 collection pattern
-  loader: glob({ pattern: "**\/[^_]*.mdx", base: "./src/content/astrophotography" }),
+  loader: glob({
+    pattern: "**\/[^_]*.mdx",
+    base: "./src/content/astrophotography",
+  }),
   schema: baseSchema,
 });
 ```

@@ -5,13 +5,19 @@
 <link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
 <script src="/pagefind/pagefind-ui.js" is:inline></script>
 
-<button id="searchButton" class="text-lg pl-[30px] h-[50px]" aria-haspopup="dialog">Search</button>
+<button
+  id="searchButton"
+  class="text-lg pl-[30px] h-[50px]"
+  aria-haspopup="dialog">Search</button
+>
 
 <dialog id="searchDialog" class="search-dialog">
   <div
     class="dialog-content bg-[rgb(245,245,245)] dark:bg-[rgb(34,33,37)] dark:text-[rgb(245,245,245)] w-[350px] md:w-[700px]"
   >
-    <button id="closeButton" class="close" aria-label="Close search">&times;</button>
+    <button id="closeButton" class="close" aria-label="Close search"
+      >&times;</button
+    >
     <div id="search" class="m-8" transition:persist></div>
   </div>
 </dialog>
@@ -29,7 +35,9 @@
   let pagefindUI: PagefindUI | null = null;
 
   document.addEventListener("astro:page-load", () => {
-    const dialog = document.getElementById("searchDialog") as HTMLDialogElement | null;
+    const dialog = document.getElementById(
+      "searchDialog",
+    ) as HTMLDialogElement | null;
     const searchButton = document.getElementById("searchButton");
     const closeButton = document.getElementById("closeButton");
 

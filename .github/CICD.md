@@ -221,8 +221,8 @@ Key features:
 
 1. **Smart Caching**: Cache keys only invalidate on actual dependency/config changes (not on every source file change)
 2. **Parallel Deployments**: Web deployments (Workers, Deno, Pages) run simultaneously
-5. **Artifact Sharing**: Build once, deploy to multiple targets from shared artifact
-6. **Bun Runtime**: Significantly faster than npm for installation and building
+3. **Artifact Sharing**: Build once, deploy to multiple targets from shared artifact
+4. **Bun Runtime**: Significantly faster than npm for installation and building
 
 ### Pipeline Timing
 

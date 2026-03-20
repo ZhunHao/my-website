@@ -704,13 +704,10 @@ The GitHub Actions workflow in `.github/workflows/deploy.yml` handles deployment
    - Employs the `build:github-pages` npm script for proper routing
    - Maintains full compatibility with other deployment platforms
 
-
 5. **Cache Management**:
    - Purges Cloudflare's edge cache after each deployment
 
-
 ## Security Measures
-
 
 2. **Content Security**: The RSS feed generation uses `sanitize-html` to prevent XSS vulnerabilities.
 
@@ -902,4 +899,5 @@ While not explicitly documented, I expect all contributors to be respectful and 
 ---
 
 This README will continue to evolve as the project does. Feel free to suggest improvements!
+
 # my-website

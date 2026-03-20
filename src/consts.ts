@@ -1,12 +1,15 @@
 /** Site-wide constants — single source of truth for values used across components. */
 
 export const SITE_TITLE = "sidequests";
-export const SITE_DESCRIPTION = "An overly engineered scrapbook for my expensive hobbies.";
+export const SITE_DESCRIPTION =
+  "An overly engineered scrapbook for my expensive hobbies.";
 export const SITE_AUTHOR = "Wong Zhun Hao";
 
 /** CDN base URLs for remote images. */
-export const CDN_FAVICON_URL = "https://www.wongzhunhao.com/core/zh_favicon.png";
-export const CDN_COVER_IMAGE_URL = "https://www.wongzhunhao.com/core/fallback_image.avif";
+export const CDN_FAVICON_URL =
+  "https://www.wongzhunhao.com/core/zh_favicon.png";
+export const CDN_COVER_IMAGE_URL =
+  "https://www.wongzhunhao.com/core/fallback_image.avif";
 
 /** Social media links. */
 export const SOCIAL_LINKS = {
