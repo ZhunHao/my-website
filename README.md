@@ -19,7 +19,7 @@
 
 ## Overview
 
-Revista is a photography portfolio and blog built on Astro v6.0.1. I created it to showcase various photography collections and writing organized into different categories like long-form, short-form, muses, zeitweilig, and my CV. The project prioritizes speed and visual design while using Astro's content collection API to manage everything efficiently.
+www.wongzhunhao.com is a photography portfolio and creative collection built on Astro v6.0.1. It showcases various photography and creative work organized into different collections: astrophotography, travel photos, studio work (the atelier), creative vignettes, and a CV. The project prioritizes speed and visual design while using Astro's content collection API to manage everything efficiently.
 
 The project supports multiple deployment targets with optimized builds for each platform, including GitHub Pages with proper base path configuration.
 
@@ -59,10 +59,10 @@ graph TD
     B --> I["📁 styles<br>(CSS)"]
     B --> J["📁 scripts<br>(client JS)"]
 
-    H --> K["📝 long_form<br>(articles)"]
-    H --> L["📝 short_form<br>(quick posts)"]
-    H --> M["📝 muses<br>(photography)"]
-    H --> N["📝 zeitweilig<br>(temporary thoughts)"]
+    H --> K["📝 astrophotography<br>(star & sky photos)"]
+    H --> L["📝 travel_photos<br>(travel collections)"]
+    H --> M["📝 the_atelier<br>(studio work)"]
+    H --> N["📝 vignettes<br>(creative sketches)"]
     H --> O["📝 authors<br>(contributor info)"]
     H --> P["📝 cv<br>(resume data)"]
 ```
@@ -142,7 +142,7 @@ graph TD
 
 ## Key Features
 
-1. **Multiple Content Collections**: The site organizes content into different types (long_form, short_form, muses, zeitweilig, authors, cv), each managed as an Astro content collection using the glob loader pattern. This gives me type-safe content management, explicit file selection, and simplified querying.
+1. **Multiple Content Collections**: The site organizes content into different types (astrophotography, travel_photos, the_atelier, vignettes, authors, cv), each managed as an Astro content collection using the glob loader pattern. This gives me type-safe content management, explicit file selection, and simplified querying.
 
 2. **Responsive Design**: The site uses Tailwind CSS for a mobile-first approach. I've customized the breakpoints to match my specific needs at 800px, 1200px, 1900px, 2500px, and 3800px, which ensures the site looks good on everything from phones to ultra-wide monitors.
 
@@ -193,7 +193,7 @@ bun run preview
 bun run create
 
 # Specify content type directly
-bun run create -t muses
+bun run create -t astrophotography
 
 # Preview frontmatter without creating a file (dry run)
 bun run create --dry-run
@@ -204,7 +204,7 @@ bun run create -d
 bun run create --help
 
 # Non-interactive mode (for scripts or automated workflows)
-bun run create --non-interactive --type muses --title "Post Title" --description "Post description" --tags "tag1,tag2" --pub-date "2024-05-19T12:00:00Z" --updated-date "2024-05-20T10:00:00Z"
+bun run create --non-interactive --type astrophotography --title "Post Title" --description "Post description" --tags "tag1,tag2" --pub-date "2024-05-19T12:00:00Z" --updated-date "2024-05-20T10:00:00Z"
 ```
 
 This interactive tool:
@@ -213,22 +213,22 @@ This interactive tool:
 - Provides a user-friendly interface with colored prompts
 - Validates input according to schema requirements
 - Generates proper filenames using date-slug.mdx pattern (uses pubDate for the filename when provided)
-- Supports all content types: muses, short_form, long_form, zeitweilig, authors, cv
+- Supports all content types: astrophotography, travel_photos, the_atelier, vignettes, authors, cv
 
 #### Post Update Tool
 
 ```bash
 # Update an existing post's frontmatter (e.g., add/modify updated date)
-bun run update-post --file muses/2025-05-19-commodification.mdx --updated-date "2025-05-20T12:00:00Z"
+bun run update-post --file astrophotography/2026-03-14-22-degree-halo-25-august-2025.mdx --updated-date "2026-03-15T12:00:00Z"
 
 # Preview changes without writing to file
-bun run update-post --file short_form/2025-05-19-the-essence-of-light.mdx --tags "photography,light,art,philosophy" --dry-run
+bun run update-post --file travel_photos/2026-01-10-one-day-in-hong-kong-hong-kong.mdx --tags "travel,asia,photography" --dry-run
 
 # Update multiple fields at once
-bun run update-post --file muses/2025-05-19-commodification.mdx \
+bun run update-post --file astrophotography/2026-03-14-22-degree-halo-25-august-2025.mdx \
   --title "New Title" \
-  --tags "photography,art,economics,critique" \
-  --updated-date "2025-05-20T08:15:00Z"
+  --tags "astrophotography,optics,sky" \
+  --updated-date "2026-03-15T08:15:00Z"
 ```
 
 This tool allows you to:
@@ -248,10 +248,10 @@ For detailed documentation on both tools, see [scripts/README.md](scripts/README
 
 ```mermaid
 graph TD
-    A["📁 content/"] --> B["📁 long_form/<br><i>in-depth articles</i>"]
-    A --> C["📁 short_form/<br><i>brief posts</i>"]
-    A --> D["📁 muses/<br><i>photo collections</i>"]
-    A --> E["📁 zeitweilig/<br><i>ephemeral content</i>"]
+    A["📁 content/"] --> B["📁 astrophotography/<br><i>stars & sky photos</i>"]
+    A --> C["📁 travel_photos/<br><i>travel collections</i>"]
+    A --> D["📁 the_atelier/<br><i>studio work</i>"]
+    A --> E["📁 vignettes/<br><i>creative sketches</i>"]
     A --> F["📁 authors/<br><i>contributor profiles</i>"]
     A --> G["📁 cv/<br><i>professional info</i>"]
 ```
@@ -260,22 +260,21 @@ graph TD
 
 ```mermaid
 graph TD
-    B["📁 long_form/"] --> H["📄 iceland-trip.mdx<br><i>frontmatter + markdown</i>"]
-    B --> I["📄 camera-review.mdx<br><i>frontmatter + markdown</i>"]
+    B["📁 astrophotography/"] --> H["📄 22-degree-halo-25-august-2025.mdx<br><i>frontmatter + markdown</i>"]
 
-    C["📁 short_form/"] --> J["📄 new-lens.mdx<br><i>frontmatter + markdown</i>"]
-    C --> K["📄 photo-tip.mdx<br><i>frontmatter + markdown</i>"]
+    C["📁 travel_photos/"] --> J["📄 one-day-in-hong-kong-hong-kong.mdx<br><i>frontmatter + markdown</i>"]
+    C --> K["📄 a-month-in-shanghai-shanghai-china.mdx<br><i>frontmatter + markdown</i>"]
 ```
 
 ### Specialized Content Types
 
 ```mermaid
 graph TD
-    D["📁 muses/"] --> L["📄 urban-geometry.mdx<br><i>photo gallery post</i>"]
+    D["📁 the_atelier/"] --> L["📄 the-skys-sketchbook.mdx<br><i>studio work</i>"]
 
-    E["📁 zeitweilig/"] --> M["📄 thoughts-on-bw.mdx<br><i>creative exploration</i>"]
+    E["📁 vignettes/"] --> M["📄 thursday-night-glow.mdx<br><i>creative sketch</i>"]
 
-    F["📁 authors/"] --> N["📄 about-me.mdx<br><i>author bio</i>"]
+    F["📁 authors/"] --> N["📄 wong-zhun-hao.mdx<br><i>author bio</i>"]
 
     G["📁 cv/"] --> O["📄 cv-export.html<br><i>exported CV from cv-v0</i>"]
 ```
@@ -301,28 +300,26 @@ const baseSchema = z.object({
   updatedDate: z.coerce.date().optional(),
 });
 
-const muses = defineCollection({
-  loader: glob({ pattern: "**\/[^_]*.mdx", base: "./src/content/muses" }),
+const astrophotography = defineCollection({
+  loader: glob({ pattern: "**\/[^_]*.mdx", base: "./src/content/astrophotography" }),
   schema: baseSchema,
 });
 
-// Example frontmatter from an actual muses post:
+// Example frontmatter from an actual astrophotography post:
 ---
-title: "Stockholm: Urban Reflections"
-tags: ["sweden", "architecture", "street", "reflection"]
-author: "Erfi Anugrah"
-description: "A winter wander through Stockholm's glass-filled business district"
+title: "22 Degree Halo - 25 August 2025"
+pubDate: 2026-03-14T12:00:00.000Z
+tags: [ 'astrophotography', 'optics' ]
+author: "Zhun Hao"
 image:
-  src: "https://image.erfi.io/stockholm-reflections-01.jpg"
-  alt: "Office building reflection with stark contrast on a winter day"
-  positionx: "center"
-  positiony: "top-33"
-pubDate: 2024-01-21
+  src: "https://www.wongzhunhao.com/astrophotography/halo_2025/22-degree-halo.avif"
+  alt: "A 22 degree halo surrounding the moon, a luminous ring created by ice crystal refraction in the upper atmosphere."
+  positionx: "50"
+  positiony: "50"
+description: "Captured a beautiful 22 degree halo around the moon on the evening of August 25, 2025. An optical phenomenon caused by ice crystals in the atmosphere refracting light."
 ---
 
-My weekend explorations took me to Kungsholmen, where the lowering sun
-creates dramatic shadows across the sleek glass facades of Stockholm's
-business district...
+The phenomenon occurs when hexagonal ice crystals in cirrus clouds refract moonlight at a specific angle...
 ```
 
 Each Markdown file includes frontmatter with metadata like title, publication date, tags, and image information. I define the content collections in `src/content.config.ts`, which specifies the schema using Zod for runtime type checking and uses Astro's glob loader pattern to identify which files belong to each collection.
@@ -338,53 +335,53 @@ Revista uses a mix of file-based routing and dynamic route generation:
 
 ```mermaid
 graph TD
-    A["🏠 www.erfianugrah.com<br>(Root)"] --> B["❌ /404<br>(Custom error page)"]
+    A["🏠 www.wongzhunhao.com<br>(Root)"] --> B["❌ /404<br>(Custom error page)"]
     A --> C["👤 /authors<br>(Contributor profiles)"]
     A --> D["📋 /cv<br>(Resume page)"]
-    A --> E["📚 /long_form<br>(Article index)"]
-    A --> F["📝 /short_form<br>(Brief posts index)"]
-    A --> G["🖼️ /muses<br>(Photography index)"]
-    A --> H["⏳ /zeitweilig<br>(Ephemeral content)"]
+    A --> E["🌟 /astrophotography<br>(Stars & sky photos)"]
+    A --> F["✈️ /travel_photos<br>(Travel collections)"]
+    A --> G["🎨 /the_atelier<br>(Studio work)"]
+    A --> H["✍️ /vignettes<br>(Creative sketches)"]
 
     C -.-> C0["📡 /authors/rss.xml"]
-    E -.-> E0["📡 /long_form/rss.xml"]
-    F -.-> F0["📡 /short_form/rss.xml"]
-    G -.-> G0["📡 /muses/rss.xml"]
-    H -.-> H0["📡 /zeitweilig/rss.xml"]
+    E -.-> E0["📡 /astrophotography/rss.xml"]
+    F -.-> F0["📡 /travel_photos/rss.xml"]
+    G -.-> G0["📡 /the_atelier/rss.xml"]
+    H -.-> H0["📡 /vignettes/rss.xml"]
 ```
 
-### Long-form and Short-form Routes
+### Astrophotography and Travel Photos Routes
 
 ```mermaid
 graph TD
-    E["📚 /long_form"] --> I["📄 /long_form/[post-slug]<br>(Individual article pages)"]
-    E --> J["🏷️ /long_form/tags<br>(Tags index)"]
-    J --> K["🔖 /long_form/tags/[tag]<br>(Articles with specific tag)"]
+    E["🌟 /astrophotography"] --> I["📄 /astrophotography/[post-slug]<br>(Individual photo pages)"]
+    E --> J["🏷️ /astrophotography/tags<br>(Tags index)"]
+    J --> K["🔖 /astrophotography/tags/[tag]<br>(Photos with specific tag)"]
 
-    F["📝 /short_form"] --> L["📄 /short_form/[post-slug]<br>(Individual post pages)"]
-    F --> M["🏷️ /short_form/tags<br>(Tags index)"]
-    M --> N["🔖 /short_form/tags/[tag]<br>(Posts with specific tag)"]
+    F["✈️ /travel_photos"] --> L["📄 /travel_photos/[post-slug]<br>(Individual collection pages)"]
+    F --> M["🏷️ /travel_photos/tags<br>(Tags index)"]
+    M --> N["🔖 /travel_photos/tags/[tag]<br>(Collections with specific tag)"]
 ```
 
-### Muses and Zeitweilig Routes
+### The Atelier and Vignettes Routes
 
 ```mermaid
 graph TD
-    G["🖼️ /muses"] --> O["🖼️ /muses/[post-slug]<br>(Individual gallery pages)"]
-    G --> P["🏷️ /muses/tags<br>(Tags index)"]
-    P --> Q["🔖 /muses/tags/[tag]<br>(Galleries with specific tag)"]
+    G["🎨 /the_atelier"] --> O["📄 /the_atelier/[post-slug]<br>(Individual studio work pages)"]
+    G --> P["🏷️ /the_atelier/tags<br>(Tags index)"]
+    P --> Q["🔖 /the_atelier/tags/[tag]<br>(Studio work with specific tag)"]
 
-    H["⏳ /zeitweilig"] --> R["📄 /zeitweilig/[post-slug]<br>(Individual content pages)"]
-    H --> S["🏷️ /zeitweilig/tags<br>(Tags index)"]
-    S --> T["🔖 /zeitweilig/tags/[tag]<br>(Content with specific tag)"]
+    H["✍️ /vignettes"] --> R["📄 /vignettes/[post-slug]<br>(Individual vignette pages)"]
+    H --> S["🏷️ /vignettes/tags<br>(Tags index)"]
+    S --> T["🔖 /vignettes/tags/[tag]<br>(Vignettes with specific tag)"]
 ```
 
 </details>
 
 The routing system combines static and dynamic routes:
 
-- **Static routes** like `/muses` are defined by files at `src/pages/muses.astro`
-- **Dynamic routes** like `/long_form/camera-review` are handled by `src/pages/long_form/[...id].astro`
+- **Static routes** like `/astrophotography` are defined by files at `src/pages/astrophotography.astro`
+- **Dynamic routes** like `/astrophotography/22-degree-halo-25-august-2025` are handled by `src/pages/astrophotography/[...id].astro`
 - **Collection pages** use `getStaticPaths()` to generate routes from content collections
 - **Tag pages** are automatically generated for each tag used in the content
 
@@ -399,15 +396,15 @@ Each collection follows the same pattern of routes: index, individual posts, tag
    - `/cv`: CV page (`src/pages/cv.astro`)
 
 2. **Collection Routes**:
-   For each collection (long_form, short_form, muses, zeitweilig):
+   For each collection (astrophotography, travel_photos, the_atelier, vignettes):
    - `/{collection}`: Index page for the collection (`src/pages/{collection}/index.astro`)
    - `/{collection}/post-id`: Individual post pages (`src/pages/{collection}/[...id].astro`)
    - `/{collection}/tags`: Tag index for the collection (`src/pages/{collection}/tags/index.astro`)
    - `/{collection}/tags/tag-name`: Pages for specific tags (`src/pages/{collection}/tags/[tag].astro`)
 
 3. **Dynamic Route Generation**:
-   - Post pages (e.g., `/long_form/post-id`) are generated dynamically based on the content in the respective collection using `getStaticPaths()` in `[...id].astro`.
-   - Tag pages (e.g., `/long_form/tags/tag-name`) are generated for each unique tag used in the collection, also using `getStaticPaths()` in `[tag].astro`.
+   - Post pages (e.g., `/astrophotography/22-degree-halo-25-august-2025`) are generated dynamically based on the content in the respective collection using `getStaticPaths()` in `[...id].astro`.
+   - Tag pages (e.g., `/astrophotography/tags/astrophotography`) are generated for each unique tag used in the collection, also using `getStaticPaths()` in `[tag].astro`.
 
 4. **RSS Feeds**:
    - Each collection has an RSS feed available at `/{collection}/rss.xml`, generated by `rss.xml.ts` files in each collection's directory.
