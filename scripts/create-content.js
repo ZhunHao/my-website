@@ -331,12 +331,9 @@ async function main() {
     let imageFormatted = "";
     if (frontmatter.image) {
       const props = Object.entries(frontmatter.image)
-        .map(([key, value]) => {
-          if (key === "src") return `  src: ${value}`;
-          return `  ${key}: "${value}"`;
-        })
+        .map(([key, value]) => `  ${key}: "${value}"`)
         .join("\n");
-      imageFormatted = `{\n${props}\n}`;
+      imageFormatted = `\n${props}`;
     }
 
     // Create frontmatter with custom formatting
@@ -355,7 +352,7 @@ author: ${authorFormatted}`;
 
     // Add image if present
     if (frontmatter.image) {
-      formattedFrontmatter += `\nimage: ${imageFormatted}`;
+      formattedFrontmatter += `\nimage:${imageFormatted}`;
     }
 
     // Add description
@@ -495,12 +492,9 @@ function handleNonInteractiveMode(schemas, options) {
   let imageFormatted = "";
   if (frontmatter.image) {
     const props = Object.entries(frontmatter.image)
-      .map(([key, value]) => {
-        if (key === "src") return `  src: ${value}`;
-        return `  ${key}: "${value}"`;
-      })
+      .map(([key, value]) => `  ${key}: "${value}"`)
       .join("\n");
-    imageFormatted = `{\n${props}\n}`;
+    imageFormatted = `\n${props}`;
   }
 
   // Create frontmatter with custom formatting
@@ -519,7 +513,7 @@ author: ${authorFormatted}`;
 
   // Add image if present
   if (frontmatter.image) {
-    formattedFrontmatter += `\nimage: ${imageFormatted}`;
+    formattedFrontmatter += `\nimage:${imageFormatted}`;
   }
 
   // Add description
