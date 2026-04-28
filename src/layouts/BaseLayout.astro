@@ -114,7 +114,19 @@ const formattedUpdatedDate = updatedDate
 <html class="bg-[rgb(244,242,238)] dark:bg-[rgb(34,33,37)]" lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/webp" href={favicon_webp.src} />
+    <!-- Primary: SVG, adapts to prefers-color-scheme -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- 16px-only fallback (3-streak variant) for smudge-prone tab sizes -->
+    <link rel="icon" type="image/svg+xml" sizes="16x16" href="/favicon-16.svg" />
+    <!-- PNG fallbacks for browsers without SVG favicon support -->
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48-light.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48-dark.png" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32-light.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32-dark.png" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16-light.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16-dark.png" media="(prefers-color-scheme: dark)" />
+    <!-- iOS home screen — single file, no theme awareness -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="canonical" href={new URL(Astro.url.pathname, baseUrl).href} />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
