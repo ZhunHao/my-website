@@ -15,7 +15,7 @@ export default defineConfig({
     process.env.GITHUB_PAGES === "true"
       ? "https://zhunhao.github.io"
       : "https://wongzhunhao.com",
-  base: process.env.GITHUB_PAGES === "true" ? "/revista-3" : undefined,
+  base: process.env.GITHUB_PAGES === "true" ? "/my-website" : undefined,
 
   image: {
     // responsiveStyles intentionally left at default `false` —

@@ -1,0 +1,59 @@
+# Deploy a static Astro mirror to GitHub Pages.
+#
+# Cloudflare Workers (via Workers Builds) is the primary deployment for
+# wongzhunhao.com. This workflow keeps a parallel mirror at
+# https://zhunhao.github.io/my-website/ so the site stays browsable even
+# if Cloudflare goes down.
+#
+# Per Astro's GitHub Pages guide: never use "Deploy from a branch" mode
+# (it auto-runs Jekyll, which can't parse .astro frontmatter). The repo
+# is configured with build_type: workflow so this workflow is the sole
+# Pages deployer.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Cancel in-flight deploys when a newer commit lands on main, but let
+# any deploy that's reached the deploy job finish so Pages doesn't end
+# up partially updated.
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build with Astro action
+        uses: withastro/action@v5
+        with:
+          # Bun 1.2+ uses the text-format `bun.lock` rather than the
+          # legacy binary `bun.lockb`; setting the package manager
+          # explicitly avoids any auto-detection ambiguity.
+          package-manager: bun@latest
+          # Custom build command that sets GITHUB_PAGES=true so
+          # astro.config.mjs picks the github.io site/base values, then
+          # runs pagefind indexing.
+          build-cmd: bun run build:github-pages
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
