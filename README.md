@@ -1,5 +1,5 @@
 <p>
-  <img alt="Version" src="https://img.shields.io/github/v/tag/erfianugrah/revista-3?label=version" />
+  <img alt="Version" src="https://img.shields.io/github/v/tag/ZhunHao/my-website?label=version" />
   <img alt="Astro" src="https://img.shields.io/badge/Astro-6.0.1-FF5D01.svg?logo=astro&logoColor=white" />
   <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-4.1.17-38B2AC.svg?logo=tailwind-css&logoColor=white" />
   <img alt="React" src="https://img.shields.io/badge/React-19.2.1-61DAFB.svg?logo=react&logoColor=white" />
@@ -7,10 +7,7 @@
   <img alt="MDX" src="https://img.shields.io/badge/MDX-5.0.0-beta.12-1B1F24.svg?logo=mdx&logoColor=white" />
   <img alt="Bun" src="https://img.shields.io/badge/Bun-Latest-F9F1E1.svg?logo=bun&logoColor=black" />
   <br/>
-  <img alt="GitHub CI/CD" src="https://img.shields.io/badge/CI%2FCD-GitHub_Actions-2088FF.svg?logo=github-actions&logoColor=white" />
   <img alt="Cloudflare" src="https://img.shields.io/badge/Cloudflare-Deployed-F38020.svg?logo=cloudflare&logoColor=white" />
-  <img alt="Deno Deploy" src="https://img.shields.io/badge/Deno-Deployed-000000.svg?logo=deno&logoColor=white" />
-  <img alt="GitHub Pages" src="https://img.shields.io/badge/GitHub%20Pages-Deployed-222222.svg?logo=github&logoColor=white" />
 </p>
 
 ## Quick Links
@@ -19,9 +16,9 @@
 
 ## Overview
 
-www.wongzhunhao.com is a photography portfolio and creative collection built on Astro v6.0.1. It showcases various photography and creative work organized into different collections: astrophotography, travel photos, studio work (the atelier), creative vignettes, and a CV. The project prioritizes speed and visual design while using Astro's content collection API to manage everything efficiently.
+wongzhunhao.com is a photography portfolio and creative collection built on Astro v6.0.1. It showcases various photography and creative work organized into different collections: astrophotography, travel photos, studio work (the atelier), creative vignettes, and a CV. The project prioritizes speed and visual design while using Astro's content collection API to manage everything efficiently.
 
-The project supports multiple deployment targets with optimized builds for each platform, including GitHub Pages with proper base path configuration.
+The site deploys to Cloudflare Workers Static Assets via Workers Builds (Cloudflare's dashboard git integration), with no GitHub Actions deploy step.
 
 ## Documentation Map
 
@@ -178,9 +175,6 @@ bun run dev
 
 # Standard production build
 bun run build
-
-# GitHub Pages specific build (includes base path configuration)
-bun run build:github-pages
 
 # Preview production build
 bun run preview
@@ -647,19 +641,8 @@ While the site is currently in English, I've structured it with future translati
 
 ## External Integrations
 
-1. **Cloudflare**:
-   - Handles hosting and CDN services
-   - The CI/CD pipeline includes cache purging to ensure visitors see the latest content
-
-2. **Deno Deploy**:
-   - Provides a secondary deployment target
-   - Shows how the site can adapt to different hosting environments
-
-3. **GitHub Pages**:
-   - Provides an additional deployment target using GitHub's native hosting
-   - Uses a separate build process with correct base path (`/revista-3`) configuration
-   - Includes proper permissions and environment configuration for Pages deployment
-   - Maintains compatibility with other deployment targets through environment-specific builds
+1. **Cloudflare Workers Static Assets**: hosts the site at `wongzhunhao.com`. Workers Builds (the dashboard's git integration) auto-builds and deploys on push to `main`, with atomic per-deploy cache invalidation.
+2. **`www.wongzhunhao.com`**: separate origin used as a CDN for image source files referenced from MDX frontmatter (`image.src` URLs). Astro fetches these at build time for Sharp processing.
 
 ## Development Tools
 
@@ -682,27 +665,9 @@ While the site is currently in English, I've structured it with future translati
 
 ## CI/CD Workflow
 
-The GitHub Actions workflow in `.github/workflows/deploy.yml` handles deployment:
-
-1. **Build Process**:
-   - Uses Bun for faster dependency installation and builds
-   - Implements dependency caching to speed up subsequent builds
-   - Includes retry logic in case of transient errors
-
-2. **Deno Deployment**:
-   - Pushes the built site to Deno Deploy
-
-3. **Cloudflare Deployment**:
-   - Deploys to Cloudflare Workers (with static assets) via Wrangler
-
-4. **GitHub Pages Deployment**:
-   - Uses a dedicated build process with environment-specific configuration
-   - Builds independently with the correct site URL and base path for GitHub Pages
-   - Employs the `build:github-pages` npm script for proper routing
-   - Maintains full compatibility with other deployment platforms
-
-5. **Cache Management**:
-   - Purges Cloudflare's edge cache after each deployment
+- **Cloudflare Workers Builds** (the dashboard's git integration) is the sole deployment path: it watches `main`, runs `bun run build`, and uploads `dist/` to Workers Static Assets. There is no GitHub Actions deploy job.
+- **GitHub Actions** (`.github/workflows/ci.yml`) is type-check-only — runs `astro check` on PRs and pushes to `main`. It does not deploy.
+- **Cache invalidation** happens automatically per Workers Builds deploy; no separate purge step.
 
 ## Security Measures
 
@@ -751,14 +716,10 @@ To start working with this project:
 1. Build for production:
 
    ```bash
-   # Standard build (for Cloudflare, Deno)
    bun run build
-
-   # GitHub Pages specific build (with base path)
-   bun run build:github-pages
    ```
 
-   Both commands include Pagefind indexing for search functionality.
+   Includes Pagefind indexing for search functionality.
 
 1. (Optional) Run local quality checks before committing:
 
@@ -773,21 +734,9 @@ To start working with this project:
    bun run preview
    ```
 
-## Deployment Options
+## Deployment
 
-The project supports several deployment methods:
-
-1. Cloudflare Workers (primary)
-2. Deno Deploy
-3. GitHub Pages
-
-### Deployment Secrets & Tokens
-
-| Target             | Required secrets (GitHub Actions)                                                                                                                    | Notes                                            |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| Cloudflare Workers | `CLOUDFLARE_WRANGLER_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_ZONE_ID`, `CLOUDFLARE_CACHE_PURGE_TOKEN`, `CLOUDFLARE_ZONE_NAME`, `CLOUDFLARE_WWW` | Wrangler deploy + cache purge hosts              |
-| Deno Deploy        | _None referenced in the workflow_                                                                                                                    | Uses `deployctl` with public project settings    |
-| GitHub Pages       | _None beyond repository permissions_                                                                                                                 | Build uses `build:github-pages` base/path config |
+The site deploys to **Cloudflare Workers Static Assets** via Workers Builds (the dashboard's git integration). On every push to `main`, Cloudflare clones the repo, runs `bun run build`, and uploads `dist/` to the assets store. The custom domain `wongzhunhao.com` is wired up in `wrangler.jsonc`. No GitHub Actions secrets or workflows are involved in deployment.
 
 ## Contributing
 
@@ -820,7 +769,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - The Astro community for building such a great static site generator
 - Tailwind CSS for their utility-first approach
 - Cloudflare for reliable hosting and CDN services
-- Deno Deploy for providing an additional deployment option
 - All contributors who have helped improve this project
 
 ## Contact

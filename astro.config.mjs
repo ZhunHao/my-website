@@ -11,11 +11,7 @@ import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 // https://astro.build/config
 export default defineConfig({
-  site:
-    process.env.GITHUB_PAGES === "true"
-      ? "https://zhunhao.github.io"
-      : "https://wongzhunhao.com",
-  base: process.env.GITHUB_PAGES === "true" ? "/revista-3" : undefined,
+  site: "https://wongzhunhao.com",
 
   image: {
     // responsiveStyles intentionally left at default `false` —
