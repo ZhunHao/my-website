@@ -6,6 +6,17 @@ on:
   pull_request:
     branches: [main]
 
+# Type-checking only. The full Astro build is intentionally NOT run here:
+# Astro's `inferRemoteSize` fetches every `image.src` URL from
+# www.wongzhunhao.com to determine dimensions, and GitHub-hosted runners
+# can't pull the larger AVIFs reliably (deterministic ~8s failure on the
+# 3.6 MB profile image).
+#
+# Workers Builds runs the same build on Cloudflare infra where those
+# fetches succeed, posts its own check to every PR, and is the source of
+# truth for "does this deploy". So we let Workers Builds gate deploys and
+# keep this workflow narrow and fast.
+
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -38,23 +49,3 @@ jobs:
 
       - name: Type check
         run: bun x astro check
-
-      # Build + HTML/link lint. Astro's `inferRemoteSize` fetches every
-      # `image.src` URL from www.wongzhunhao.com to determine dimensions;
-      # those fetches are intermittently flaky on GitHub-hosted runners,
-      # so we retry up to 5 times before failing the job.
-      - name: Build + lint (HTML + links) with retry
-        env:
-          MAX_ATTEMPTS: 5
-          RETRY_INTERVAL: 30
-        run: |
-          attempt=1
-          until bun run lint:site; do
-            if [ $attempt -ge $MAX_ATTEMPTS ]; then
-              echo "lint:site failed after $MAX_ATTEMPTS attempts."
-              exit 1
-            fi
-            echo "Attempt $attempt failed. Retrying in $RETRY_INTERVAL seconds..."
-            sleep $RETRY_INTERVAL
-            attempt=$((attempt + 1))
-          done
