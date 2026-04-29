@@ -2,7 +2,6 @@ import { defineConfig, fontProviders } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
 import markdoc from "@astrojs/markdoc";
-import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import icon from "astro-icon";
@@ -19,9 +18,10 @@ export default defineConfig({
   base: process.env.GITHUB_PAGES === "true" ? "/revista-3" : undefined,
 
   image: {
-    // responsiveStyles: true,
-    // layout: "full-width",
-    // objectFit: "contain",
+    // responsiveStyles intentionally left at default `false` —
+    // Tailwind 4's cascade layers have lower specificity than Astro's
+    // :where() responsive styles, so enabling this would let Astro's
+    // styles override Tailwind utilities. Per the Astro docs.
     domains: ["wongzhunhao.com", "www.wongzhunhao.com"],
     service: {
       entrypoint: "astro/assets/services/sharp",
@@ -46,8 +46,8 @@ export default defineConfig({
         langs: [],
         wrap: true,
       },
-      gfm: false,
-      remarkPlugins: [remarkGfm, remarkMath, remarkReadingTime],
+      gfm: true,
+      remarkPlugins: [remarkMath, remarkReadingTime],
       rehypePlugins: [rehypeKatex],
     }),
     markdoc(),
@@ -67,14 +67,17 @@ export default defineConfig({
       langs: [],
       wrap: true,
     },
-    gfm: false,
-    remarkPlugins: [remarkGfm, remarkMath, remarkReadingTime],
+    gfm: true,
+    remarkPlugins: [remarkMath, remarkReadingTime],
     rehypePlugins: [rehypeKatex],
   },
 
+  // Prefetch every link, but only when hovered/focused (not as soon as
+  // they enter the viewport). `viewport` is fine for sparse landing
+  // pages but over-fetches on image-heavy galleries.
   prefetch: {
     prefetchAll: true,
-    defaultStrategy: "viewport",
+    defaultStrategy: "hover",
   },
 
   fonts: [
@@ -99,24 +102,14 @@ export default defineConfig({
   ],
 
   experimental: {
+    // clientPrerender uses the Speculation Rules API (Chrome-only with
+    // graceful fallback). Still experimental in Astro 6 — opt-out by
+    // removing this block if it stops being worthwhile.
     clientPrerender: true,
-    // responsiveImages: true,
-    // directRenderScript: true
   },
 
   build: {
     concurrency: 10,
-    measuring: {
-      entryBuilding: true,
-      pageGeneration: true,
-      bundling: true,
-      rendering: true,
-      assetProcessing: true,
-    },
-  },
-
-  security: {
-    checkOrigin: false,
   },
 
   vite: {

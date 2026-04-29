@@ -168,7 +168,9 @@ These custom utilities provide precise control over image positioning and croppi
 
 ### MDX remarkPlugins Behavior
 
-When `mdx()` specifies its own `remarkPlugins`, it **replaces** (not merges with) the base `markdown.remarkPlugins`. Because all content in this project is `.mdx`, the MDX integration's `remarkPlugins` array must include every remark plugin that content depends on (`remarkGfm`, `remarkMath`, `remarkReadingTime`).
+When `mdx()` specifies its own `remarkPlugins`, it **replaces** (not merges with) the base `markdown.remarkPlugins`. Because all content in this project is `.mdx`, the MDX integration's `remarkPlugins` array must include every remark plugin that content depends on (`remarkMath`, `remarkReadingTime`).
+
+GitHub-flavored Markdown is enabled via the top-level `gfm: true` flag (mirrored on both `mdx` and `markdown` configs); Astro's built-in `@astrojs/markdown-remark` injects `remark-gfm` transitively, so it does **not** need to appear as a direct project dependency.
 
 ### Schema Definition Pattern
 
