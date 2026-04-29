@@ -2,7 +2,7 @@
 
 ## Overview
 
-Astro 5 static site (blog/portfolio) with MDX content collections, React islands, Tailwind CSS v4, and Pagefind search. Deployed to Cloudflare Workers (static assets) and optionally GitHub Pages. Runtime is Bun.
+Astro 5 static site (blog/portfolio) with MDX content collections, React islands, Tailwind CSS v4, and Pagefind search. Deployed to Cloudflare Workers Static Assets (assets-only, no Worker code) via Workers Builds git integration. Runtime is Bun.
 
 ## Project Structure
 
@@ -12,7 +12,6 @@ src/
   content/        MDX content collections (muses, short_form, long_form, zeitweilig, authors, cv)
   content.config.ts   Zod schemas for all collections
   consts.ts       Site-wide constants (title, author, CDN URLs, social links)
-  index.ts        Cloudflare Workers asset entry point
   layouts/        PascalCase .astro layout files
   pages/          File-based routing; each collection has detail/RSS/tag routes
   scripts/        camelCase helpers (collections.ts, theme.ts, utils.ts, etc.)
@@ -61,7 +60,7 @@ Configured in `.prettierrc.mjs`. Uses `prettier-plugin-astro` for `.astro` files
 
 - `tsconfig.json` extends `astro/tsconfigs/base` with `strictNullChecks: true`
 - JSX configured as `react-jsx` with `jsxImportSource: "react"`
-- Use `satisfies` for type-safe object literals (see `src/index.ts`)
+- Use `satisfies` for type-safe object literals
 - Use optional chaining and nullish coalescing for defensive access
 - Define interfaces/types near usage; shared types go in the relevant module (e.g., `CollectionName` in `collections.ts`)
 
@@ -108,7 +107,6 @@ Configured in `.prettierrc.mjs`. Uses `prettier-plugin-astro` for `.astro` files
 - Use optional chaining (`?.`) and nullish coalescing (`??`) for nullable data
 - Content entries may have optional fields; always guard access (see `sortByDate.ts` pattern)
 - React islands: add runtime guards for DOM APIs (getElementById may return null)
-- Cloudflare Worker entry is minimal; errors propagate through the asset handler
 
 ## Content Collections
 
@@ -130,7 +128,8 @@ Shared route helpers in `src/scripts/collections.ts`:
 
 ## Deployment
 
-- **Cloudflare Workers**: static asset serving via `wrangler.jsonc`; entry at `src/index.ts`
-- **GitHub Pages**: set `GITHUB_PAGES=true` during build for correct base path
-- Pagefind indexes `dist/` after build; runs automatically via `postbuild` script
-- Secrets belong in platform environment variables; never commit `.env`
+- **Cloudflare Workers Static Assets**: assets-only deployment configured via `wrangler.jsonc`. Workers Builds (git integration) auto-builds and deploys on push to `main`; no GitHub Actions deploy step needed.
+- Cache and security headers live in `public/_headers` (copied verbatim into `dist/`).
+- **GitHub Pages**: optional fallback — set `GITHUB_PAGES=true` during build for correct base path. No CI job ships this automatically; deploy manually if needed.
+- Pagefind indexes `dist/` after build; runs automatically via `postbuild` script.
+- Secrets belong in platform environment variables; never commit `.env`.
