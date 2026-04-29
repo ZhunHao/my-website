@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Type-checking only. The full Astro build is intentionally NOT run here:
+# Astro's `inferRemoteSize` fetches every `image.src` URL from
+# www.wongzhunhao.com to determine dimensions, and GitHub-hosted runners
+# can't pull the larger AVIFs reliably (deterministic ~8s failure on the
+# 3.6 MB profile image).
+#
+# Workers Builds runs the same build on Cloudflare infra where those
+# fetches succeed, posts its own check to every PR, and is the source of
+# truth for "does this deploy". So we let Workers Builds gate deploys and
+# keep this workflow narrow and fast.
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: "1.2.21"
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+            node_modules
+          key: bun-${{ hashFiles('**/bun.lock', '**/package.json') }}
+          restore-keys: |
+            bun-
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Type check
+        run: bun x astro check
