@@ -29,7 +29,6 @@ bun install                    # Install dependencies (lockfile: bun.lock)
 bun run dev                    # Dev server with HMR (alias: bun run start)
 bun run build                  # Production build (runs prebuild + postbuild/pagefind)
 bun run preview                # Preview built output from dist/
-bun run build:github-pages     # Build with GITHUB_PAGES=true base path
 
 # Linting (requires a build in dist/ first)
 bun run lint:html              # html-validate on dist/**/*.html
@@ -128,8 +127,7 @@ Shared route helpers in `src/scripts/collections.ts`:
 
 ## Deployment
 
-- **Cloudflare Workers Static Assets**: assets-only deployment configured via `wrangler.jsonc`. Workers Builds (git integration) auto-builds and deploys on push to `main`; no GitHub Actions deploy step needed.
+- **Cloudflare Workers Static Assets** is the sole deployment target. Configured via `wrangler.jsonc` (assets-only, no Worker code). Workers Builds (the git integration) auto-builds and deploys on push to `main`; no GitHub Actions deploy step needed.
 - Cache and security headers live in `public/_headers` (copied verbatim into `dist/`).
-- **GitHub Pages**: optional fallback — set `GITHUB_PAGES=true` during build for correct base path. No CI job ships this automatically; deploy manually if needed.
 - Pagefind indexes `dist/` after build; runs automatically via `postbuild` script.
 - Secrets belong in platform environment variables; never commit `.env`.

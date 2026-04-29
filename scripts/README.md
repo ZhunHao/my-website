@@ -209,7 +209,7 @@ The tool automatically detects all content collections defined in `content.confi
    slug: stockholm-urban-reflections
    ---
 
-   ? Create file at /home/erfi/revista-3/src/content/muses/2025-05-19-stockholm-urban-reflections.mdx? Yes
+   ? Create file at <project-root>/src/content/muses/2025-05-19-stockholm-urban-reflections.mdx? Yes
    ```
 
 5. File is created and next steps are shown

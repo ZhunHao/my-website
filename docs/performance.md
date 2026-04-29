@@ -89,15 +89,7 @@ This configuration:
 
 ## CDN Integration
 
-The site is deployed to Cloudflare Workers with Static Assets for edge caching:
-
-### Edge Deployment
-
-The project deploys to multiple edge platforms:
-
-1. **Cloudflare Workers (with Static Assets)**: Main deployment with global edge distribution
-2. **Deno Deploy**: Secondary deployment for additional edge presence
-3. **GitHub Pages**: Tertiary deployment for GitHub-hosted access
+The site is deployed to Cloudflare Workers Static Assets for edge caching, served from Cloudflare's global network with atomic per-deploy invalidation handled by Workers Builds.
 
 ## Mobile Optimization
 

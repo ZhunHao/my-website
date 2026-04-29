@@ -236,7 +236,7 @@ The project uses a multi-layered approach to image optimization:
    ```javascript
    // astro.config.mjs
    image: {
-     domains: ["wongzhunhao.com", "zhunhao.github.io"],
+     domains: ["wongzhunhao.com", "www.wongzhunhao.com"],
      service: {
        entrypoint: "astro/assets/services/sharp",
        config: {
