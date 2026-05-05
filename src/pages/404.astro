@@ -4,9 +4,16 @@ import Prose from "../components/Prose.astro";
 const pageTitle = "404: Page Not Found";
 const subTitle = "But The Stars Found You";
 const question = "Or did you find the void?";
+const description =
+  "The page you're looking for doesn't exist. Head back to the homepage or use the search to find what you need.";
 ---
 
-<BaseLayout title={pageTitle} is404Page={true}>
+<BaseLayout
+  title={pageTitle}
+  description={description}
+  is404Page={true}
+  noindex={true}
+>
   <Prose>
     <div class="space-y-8 py-8">
       <header class="text-center space-y-4">

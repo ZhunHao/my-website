@@ -18,3 +18,38 @@ export const SOCIAL_LINKS = {
   instagram: "https://www.instagram.com/zhun_ha0/",
   substack: "https://substack.com/@zhunhao",
 } as const;
+
+/**
+ * Per-collection display metadata used by listing/tag/RSS pages and SEO.
+ * Keep titles short for browser tabs and descriptions <= ~155 chars so
+ * search engines render them without truncation.
+ */
+export const COLLECTION_META: Record<
+  string,
+  { title: string; description: string }
+> = {
+  astrophotography: {
+    title: "Astrophotography",
+    description:
+      "Long-exposure photographs of the night sky — Milky Way, lunar halos, meteor showers, and other observations from under dark skies.",
+  },
+  the_atelier: {
+    title: "The Atelier",
+    description:
+      "Sketches, illustrations, and visual experiments — a working notebook of small visual ideas.",
+  },
+  travel_photos: {
+    title: "Travel Photos",
+    description:
+      "Photo essays from trips abroad — cities, food, museums, and the in-between moments worth keeping.",
+  },
+  vignettes: {
+    title: "Vignettes",
+    description:
+      "Short photo sets and quick observations from everyday life — the small things that catch the eye.",
+  },
+  authors: {
+    title: "Authors",
+    description: `Contributors to ${SITE_TITLE} — short bios and indexed posts by author.`,
+  },
+};

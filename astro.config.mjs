@@ -29,7 +29,35 @@ export default defineConfig({
 
   integrations: [
     icon(),
-    sitemap(),
+    sitemap({
+      // Defaults applied to every entry; serialize() refines per-page.
+      changefreq: "weekly",
+      priority: 0.7,
+      lastmod: new Date(),
+      // Drop low-value or duplicative URLs from the sitemap. The 404
+      // page is noindex'd; pagefind/ is internal search infra.
+      filter: (page) => !page.endsWith("/404/") && !page.includes("/pagefind/"),
+      serialize(item) {
+        const url = item.url;
+        // Homepage gets the highest priority and a daily refresh.
+        if (url === "https://wongzhunhao.com/") {
+          item.priority = 1.0;
+          item.changefreq = "daily";
+          return item;
+        }
+        // Tag pages are derived/thin — lower priority, less frequent.
+        if (/\/tags\//.test(url)) {
+          item.priority = 0.4;
+          item.changefreq = "monthly";
+          return item;
+        }
+        // Top-level collection landing pages bump above default.
+        if (/\.com\/(astrophotography|the_atelier|travel_photos|vignettes|authors|cv)\/?$/.test(url)) {
+          item.priority = 0.9;
+        }
+        return item;
+      },
+    }),
     mdx({
       syntaxHighlight: "shiki",
       shikiConfig: {

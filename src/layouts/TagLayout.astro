@@ -15,9 +15,10 @@ interface TagImages {
 export interface Props {
   directory: CollectionName;
   title: string;
+  description?: string;
 }
 
-const { directory, title } = Astro.props;
+const { directory, title, description } = Astro.props;
 const allContent = await getCollection(directory);
 const tags = [...new Set(allContent.map((post) => post.data.tags).flat())];
 
@@ -100,7 +101,7 @@ const imageSizes = {
 };
 ---
 
-<BaseLayout title={title} is404Page={false}>
+<BaseLayout title={title} description={description} is404Page={false}>
   <div>
     {
       tags.length === 1 ? (

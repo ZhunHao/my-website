@@ -4,6 +4,7 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
 import BlogPost from "../../../components/BlogPost.astro";
 import { sortByDate } from "../../../components/sortByDate";
 import { buildTagPaths } from "../../../scripts/collections";
+import { COLLECTION_META } from "../../../consts";
 
 export async function getStaticPaths() {
   const entries = await getCollection("vignettes");
@@ -12,9 +13,17 @@ export async function getStaticPaths() {
 
 const { tag } = Astro.params;
 const { posts, collectionSlug } = Astro.props;
+const collectionTitle =
+  COLLECTION_META[collectionSlug]?.title ?? collectionSlug;
+const description = `${posts.length} ${collectionTitle.toLowerCase()} ${posts.length === 1 ? "post" : "posts"} tagged "${tag}".`;
 ---
 
-<BaseLayout title={`${tag} — ${collectionSlug}`} is404Page={false}>
+<BaseLayout
+  title={`${tag} — ${collectionTitle}`}
+  description={description}
+  tags={[tag!]}
+  is404Page={false}
+>
   {
     posts
       .sort(sortByDate)

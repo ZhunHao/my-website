@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /pagefind/
 
-Sitemap: https://www.wongzhunhao.com/sitemap-index.xml
+Sitemap: https://wongzhunhao.com/sitemap-index.xml

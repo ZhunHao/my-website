@@ -1,7 +1,9 @@
 ---
 import TagLayout from "../../../layouts/TagLayout.astro";
-const pageTitle = "Astrophotography Tag Index";
+import { COLLECTION_META } from "../../../consts";
 const directory = "astrophotography";
+const pageTitle = `${COLLECTION_META[directory].title} Tag Index`;
+const description = `Browse ${COLLECTION_META[directory].title.toLowerCase()} posts by tag.`;
 ---
 
-<TagLayout directory={directory} title={pageTitle} />
+<TagLayout directory={directory} title={pageTitle} description={description} />

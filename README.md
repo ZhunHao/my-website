@@ -28,7 +28,7 @@ The site deploys to Cloudflare Workers Static Assets via Workers Builds (Cloudfl
 - **CI/CD & Deployments:** `.github/CICD.md`
 - **Components:** `src/components/README.md`
 - **Layouts:** `src/layouts/README.md`
-- **Pages:** `src/pages/README.md`
+- **Pages:** `src/pages/_README.md`
 - **Content Collections:** `src/content/README.md`
 
 ## Project Structure
@@ -107,7 +107,7 @@ graph TD
   - `layouts/`: Page layouts used across the site ([Layouts Documentation](src/layouts/README.md))
     - `BaseLayout.astro`: The main layout used by most pages
     - `MarkdownPostLayout.astro`: Layout for rendering Markdown content
-  - `pages/`: Astro pages that generate routes ([Pages Documentation](src/pages/README.md))
+  - `pages/`: Astro pages that generate routes ([Pages Documentation](src/pages/_README.md))
     - `index.astro`: The home page
     - `404.astro`: Custom 404 error page
     - `cv.astro`: CV page

@@ -3,11 +3,12 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import BlogPost from "../components/BlogPost.astro";
 import { sortByDate } from "../components/sortByDate";
-const pageTitle = "Astrophotography";
+import { COLLECTION_META } from "../consts";
+const { title: pageTitle, description } = COLLECTION_META.astrophotography;
 const allAstrophotography = await getCollection("astrophotography");
 ---
 
-<BaseLayout title={pageTitle} is404Page={false}>
+<BaseLayout title={pageTitle} description={description} is404Page={false}>
   {
     allAstrophotography
       .sort(sortByDate)

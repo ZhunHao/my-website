@@ -14,7 +14,15 @@ import {
   CDN_COVER_IMAGE_URL,
   SOCIAL_LINKS,
 } from "../consts";
-const baseUrl = new URL(Astro.request.url).origin;
+// Canonical/OG URLs must use the production origin (Astro.site), not
+// Astro.request.url — at build time the request URL is the local dev
+// server (e.g. http://localhost:4321), which would leak into canonicals
+// and OG tags in the static output.
+const siteOrigin = Astro.site
+  ? Astro.site.origin
+  : new URL(Astro.request.url).origin;
+const baseUrl = siteOrigin;
+const canonicalUrl = new URL(Astro.url.pathname, siteOrigin).href;
 const metaImage = await getImage({
   src: CDN_COVER_IMAGE_URL,
   alt: `Cover image for ${SITE_TITLE} website`,
@@ -46,6 +54,8 @@ export interface Props {
   alt?: string;
   is404Page?: boolean;
   hideHeaderFooter?: boolean;
+  noindex?: boolean;
+  tags?: string[];
 }
 
 const {
@@ -59,7 +69,25 @@ const {
   alt,
   is404Page = false,
   hideHeaderFooter = false,
+  noindex = false,
+  tags,
 } = Astro.props;
+
+// Compute the resolved page title used in <title> and OG tags. Pages
+// other than the homepage get suffixed with the site title for context
+// in browser tabs and search results — but only when the combined
+// length stays within Google's ~65-char SERP truncation budget. Long
+// post titles keep their full meaning instead.
+const TITLE_SUFFIX_BUDGET = 65;
+function withBrandSuffix(t: string): string {
+  if (t === SITE_TITLE) return t;
+  const suffixed = `${t} | ${SITE_TITLE}`;
+  return suffixed.length <= TITLE_SUFFIX_BUDGET ? suffixed : t;
+}
+const resolvedTitle = title ? withBrandSuffix(title) : SITE_TITLE;
+const resolvedDescription = description || SITE_DESCRIPTION;
+const resolvedImage = image || `${baseUrl}${metaImage?.src}`;
+const resolvedAlt = alt || `Cover image for ${SITE_TITLE} website`;
 
 // Schema.org structured data
 const personSchema = {
@@ -109,6 +137,48 @@ const formattedPubDate = pubDate ? new Date(pubDate).toISOString() : null;
 const formattedUpdatedDate = updatedDate
   ? new Date(updatedDate).toISOString()
   : null;
+
+// Article schema for blog post pages — emitted only when pubDate is
+// set, which signals the page represents a published article. Improves
+// rich-result eligibility (date, author, image, publisher).
+const articleSchema = pubDate
+  ? {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: title || SITE_TITLE,
+      description: resolvedDescription,
+      image: resolvedImage,
+      url: canonicalUrl,
+      datePublished: formattedPubDate,
+      ...(formattedUpdatedDate
+        ? { dateModified: formattedUpdatedDate }
+        : { dateModified: formattedPubDate }),
+      author: {
+        "@type": "Person",
+        name: author || SITE_AUTHOR,
+        url: baseUrl,
+      },
+      publisher: {
+        "@type": "Person",
+        name: SITE_AUTHOR,
+        url: baseUrl,
+      },
+      mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": canonicalUrl,
+      },
+      ...(tags && tags.length > 0 ? { keywords: tags.join(", ") } : {}),
+    }
+  : null;
+
+// RSS feeds advertised in <head> so feed readers can auto-discover. The
+// path matches the per-collection rss.xml.ts routes already defined.
+const rssFeeds: { title: string; href: string }[] = [
+  { title: "vignettes", href: "/vignettes/rss.xml" },
+  { title: "the_atelier", href: "/the_atelier/rss.xml" },
+  { title: "astrophotography", href: "/astrophotography/rss.xml" },
+  { title: "travel_photos", href: "/travel_photos/rss.xml" },
+];
 ---
 
 <html class="bg-[rgb(244,242,238)] dark:bg-[rgb(34,33,37)]" lang="en">
@@ -126,52 +196,53 @@ const formattedUpdatedDate = updatedDate
     <!-- iOS home screen — single file, no theme awareness -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <link rel="canonical" href={new URL(Astro.url.pathname, baseUrl).href} />
+    <link rel="canonical" href={canonicalUrl} />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#f4f2ee" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#222125" media="(prefers-color-scheme: dark)" />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+
+    <!-- Per-collection RSS feeds for reader auto-discovery -->
+    {
+      rssFeeds.map((feed) => (
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title={`${SITE_TITLE} — ${feed.title}`}
+          href={feed.href}
+        />
+      ))
+    }
 
     <!-- Fonts -->
     <Font cssVariable="--font-inconsolata" preload />
     <Font cssVariable="--font-overpass-mono" preload />
 
     <!-- Basic SEO -->
-    <title>{title || SITE_TITLE}</title>
-    <meta name="description" content={description || SITE_DESCRIPTION} />
+    <title>{resolvedTitle}</title>
+    <meta name="description" content={resolvedDescription} />
     <meta name="author" content={author || SITE_AUTHOR} />
+    {tags && tags.length > 0 && <meta name="keywords" content={tags.join(", ")} />}
 
     <!-- OpenGraph / Facebook -->
     <meta property="og:type" content={pubDate ? "article" : "website"} />
-    <meta property="og:url" content={Astro.url} />
-    <meta property="og:title" content={title || SITE_TITLE} />
-    <meta property="og:description" content={description || SITE_DESCRIPTION} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={resolvedTitle} />
+    <meta property="og:description" content={resolvedDescription} />
     <meta property="og:site_name" content={site_name || SITE_TITLE} />
-    <meta
-      property="og:image"
-      content={image || `${baseUrl}${metaImage?.src}`}
-    />
-    <meta
-      property="og:image:alt"
-      content={alt || `Cover image for ${SITE_TITLE} website`}
-    />
+    <meta property="og:image" content={resolvedImage} />
+    <meta property="og:image:alt" content={resolvedAlt} />
     <meta property="og:image:width" content="1280" />
     <meta property="og:image:height" content="720" />
     <meta property="og:locale" content="en_US" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title || SITE_TITLE} />
-    <meta
-      name="twitter:description"
-      content={description || SITE_DESCRIPTION}
-    />
-    <meta
-      name="twitter:image"
-      content={image || `${baseUrl}${metaImage?.src}`}
-    />
-    <meta
-      name="twitter:image:alt"
-      content={alt || `Cover image for ${SITE_TITLE} website`}
-    />
+    <meta name="twitter:title" content={resolvedTitle} />
+    <meta name="twitter:description" content={resolvedDescription} />
+    <meta name="twitter:image" content={resolvedImage} />
+    <meta name="twitter:image:alt" content={resolvedAlt} />
 
     <!-- Article-specific metadata (only for pages with pubDate) -->
     {
@@ -187,6 +258,11 @@ const formattedUpdatedDate = updatedDate
         <meta property="article:modified_time" content={formattedUpdatedDate} />
       )
     }
+    {
+      pubDate &&
+        tags &&
+        tags.map((tag) => <meta property="article:tag" content={tag} />)
+    }
 
     <!-- Structured Data -->
     <script
@@ -201,6 +277,14 @@ const formattedUpdatedDate = updatedDate
       type="application/ld+json"
       set:html={JSON.stringify(breadcrumbSchema)}
     />
+    {
+      articleSchema && (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify(articleSchema)}
+        />
+      )
+    }
 
     <ClientRouter />
   </head>
