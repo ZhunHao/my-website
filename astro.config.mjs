@@ -18,7 +18,7 @@ export default defineConfig({
     // Tailwind 4's cascade layers have lower specificity than Astro's
     // :where() responsive styles, so enabling this would let Astro's
     // styles override Tailwind utilities. Per the Astro docs.
-    domains: ["wongzhunhao.com", "www.wongzhunhao.com"],
+    domains: ["wongzhunhao.com", "cdn.wongzhunhao.com"],
     service: {
       entrypoint: "astro/assets/services/sharp",
       config: {
