@@ -75,7 +75,6 @@ Components follow a hierarchical structure, with layout components (BaseLayout, 
 
 Several components carry inline type declarations to satisfy `astro check` without adding external `@types/*` packages:
 
-- **Header.astro**: Image `width`/`height` props use numeric literals (`60`) instead of strings to match Astro's `ImageMetadata` types. The favicon is fetched at 60x60 for appropriate display size.
 - **Masonry.astro**: Avoids `key` props on native HTML elements (unlike React, Astro templates don't support `key` on non-component elements).
 - **NextPost.astro**: Uses a `CollectionName` type (from `collections.ts`) for the collection prop, a `PostData` interface for frontmatter fields, and typed `getImage()` parameters.
 - **Pagefind.astro**: Uses a native `<dialog>` element for the search modal. Declares `PagefindUI` as a class in the inline script, and uses optional chaining on all DOM queries to handle nullable elements safely.

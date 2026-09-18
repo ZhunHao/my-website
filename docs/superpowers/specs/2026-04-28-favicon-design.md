@@ -45,11 +45,9 @@ All strokes use `stroke-linecap="round"`.
 
 ### Colour
 
-- **Tile:** solid `#222125` background filling the viewBox.
-- **Streaks and radiant:** `#f5f5f5`.
-- **Mechanism:** fixed colours, no `prefers-color-scheme` switching. This is the same "night sky" reading as the header logo (`CDN_FAVICON_URL`) and the Apple touch icon, and the solid tile stays legible on both light and dark tab bars.
-
-> **Revised 2026-09-18:** originally shipped as bare `#222125` / `#f5f5f5` strokes on a transparent background, switched by `prefers-color-scheme`. That rendered as a faint grey starburst in light-mode tabs and did not match the header logo's colours, so the favicon now uses the brand tile.
+- **Light theme:** `#222125` (matches the site's dark-text colour from `global.css`).
+- **Dark theme:** `#f5f5f5` (matches the site's dark-mode foreground).
+- **Mechanism:** single SVG file with embedded `@media (prefers-color-scheme: dark)` rule, mirroring the pattern used in the current `public/favicon.svg`.
 
 No accent colours, no gradients, no fills inside the streaks. The favicon stays in lock-step with the site's monochrome palette.
 
@@ -71,15 +69,17 @@ The 6-streak design renders cleanly at ≥32px. At 24px and especially at 16px, 
 
 ### In scope (this design)
 
-- **`public/favicon.svg`** — 6-streak meteor shower SVG on the `#222125` brand tile.
-- **`public/favicon-{16,32,48}.png`** — raster fallbacks (rendered at 2×) for browsers without SVG favicon support, all rendered from `favicon.svg`.
+- **`public/favicon.svg`** — 6-streak meteor shower SVG with embedded `prefers-color-scheme` style block.
+- **`public/favicon-{16,32,48}-{light,dark}.png`** — raster fallbacks for browsers without SVG favicon support, all rendered from the same 6-streak geometry.
 - **`public/apple-touch-icon.png`** — 180×180 with `#f5f5f5` streaks on a `#222125` "night sky" background; iOS doesn't honour `prefers-color-scheme`, so a single bundled file is the right choice.
 - **`public/apple-touch-icon-{light,dark}.png`** — alternates kept on hand if the night-sky default needs swapping.
 - **`<head>` `<link>` declarations** in `src/layouts/BaseLayout.astro` — full multi-icon set wired up, replacing the old single CDN-derived link.
 
 ### Out of scope (handled separately)
 
-- **`CDN_FAVICON_URL` in `src/consts.ts`** — points to `https://www.wongzhunhao.com/core/zh_favicon.png`. Still used by `Header.astro` (logo) and `BaseLayout.astro` (Schema.org `personSchema.image`). Untouched by this spec.
+- **`CDN_FAVICON_URL` in `src/consts.ts`** — points to `https://cdn.wongzhunhao.com/core/zh_favicon.png`. Still used by `BaseLayout.astro` (Schema.org `personSchema.image`) and as the `NextPost.astro` fallback thumbnail. Untouched by this spec.
+
+> **Update 2026-09-18:** `Header.astro` no longer uses the CDN tile. Its home-link logo is the same 6-streak mark inlined as SVG with `currentColor`, so it follows the site theme toggle without a tile (the tile was inverted to a light box in dark mode).
 
 ## Acceptance Criteria
 
@@ -87,13 +87,13 @@ The 6-streak design renders cleanly at ≥32px. At 24px and especially at 16px, 
 - [ ] The favicon renders correctly in a real browser tab at 16px in both light and dark system themes (verify post-deploy).
 - [x] The favicon renders correctly at 32px (bookmarks bar) and at 180px (Apple touch icon).
 - [x] The favicon visually does not resemble the Claude/Anthropic sparkle mark (no centred radiating-line symmetry).
-- [x] The favicon stays legible on both light and dark tab bars without theme switching (solid brand tile).
+- [x] The favicon adapts automatically when the user toggles system theme (no JS required).
 
 ## Trade-offs & Decisions Log
 
 | Decision                                | Alternative considered                          | Why we chose this                                                                                              |
 | --------------------------------------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| Fixed brand tile (revised 2026-09-18)   | Transparent strokes with `prefers-color-scheme` | Matches the header logo and Apple touch icon; the transparent version washed out to grey at 16px.             |
+| Single SVG with `prefers-color-scheme`  | Separate light + dark SVGs                      | Simpler integration, matches existing pattern, no extra HTML required.                                         |
 | Asymmetric streak weights and lengths   | Symmetric/uniform streaks                       | Avoids logo-mark feel; reads as observational/photographic; differentiates from Claude/Anthropic sparkle mark. |
 | 6-streak everywhere (incl. 16px PNGs)   | Simplified 3-streak variant for tab-size only   | Single visual identity end-to-end; 16px PNGs raster the 6-streak geometry cleanly enough.                      |
 | Apple touch icon = night sky reading    | Transparent or light background                 | `#f5f5f5` streaks on `#222125` stay legible on any home-screen wallpaper and reinforce the astrophotography theme. |
