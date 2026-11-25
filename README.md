@@ -1,9 +1,9 @@
 <p>
   <img alt="Version" src="https://img.shields.io/github/v/tag/ZhunHao/my-website?label=version" />
-  <img alt="Astro" src="https://img.shields.io/badge/Astro-6.0.1-FF5D01.svg?logo=astro&logoColor=white" />
-  <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-4.1.17-38B2AC.svg?logo=tailwind-css&logoColor=white" />
-  <img alt="React" src="https://img.shields.io/badge/React-19.2.1-61DAFB.svg?logo=react&logoColor=white" />
-  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5.9.3-3178C6.svg?logo=typescript&logoColor=white" />
+  <img alt="Astro" src="https://img.shields.io/badge/Astro-7.4.13-FF5D01.svg?logo=astro&logoColor=white" />
+  <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-4.3.5-38B2AC.svg?logo=tailwind-css&logoColor=white" />
+  <img alt="React" src="https://img.shields.io/badge/React-19.3.1-61DAFB.svg?logo=react&logoColor=white" />
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-6.0.3-3178C6.svg?logo=typescript&logoColor=white" />
   <img alt="MDX" src="https://img.shields.io/badge/MDX-5.0.0-beta.12-1B1F24.svg?logo=mdx&logoColor=white" />
   <img alt="Bun" src="https://img.shields.io/badge/Bun-Latest-F9F1E1.svg?logo=bun&logoColor=black" />
   <br/>
@@ -16,7 +16,7 @@
 
 ## Overview
 
-wongzhunhao.com is a photography portfolio and creative collection built on Astro v6.0.1. It showcases various photography and creative work organized into different collections: astrophotography, travel photos, studio work (the atelier), creative vignettes, and a CV. The project prioritizes speed and visual design while using Astro's content collection API to manage everything efficiently.
+wongzhunhao.com is a photography portfolio and creative collection built on Astro v7.4.13. It showcases various photography and creative work organized into different collections: astrophotography, travel photos, studio work (the atelier), creative vignettes, and a CV. The project prioritizes speed and visual design while using Astro's content collection API to manage everything efficiently.
 
 The site deploys to Cloudflare Workers Static Assets via Workers Builds (Cloudflare's dashboard git integration), with no GitHub Actions deploy step.
 
@@ -405,7 +405,7 @@ Each collection follows the same pattern of routes: index, individual posts, tag
 
 ## Styling System
 
-The site uses Tailwind CSS v4.1.17 for styling, with carefully configured settings in `tailwind.config.mjs` to create a cohesive design system:
+The site uses Tailwind CSS v4.3.5 for styling, with carefully configured settings in `tailwind.config.mjs` to create a cohesive design system:
 
 ### Design System Components
 
@@ -581,11 +581,11 @@ I've optimized the site in several ways:
 
 3. **Preloading and Prefetching**: Astro's `prefetch` feature loads linked pages before the user clicks, making navigation feel instant.
 
-4. **Efficient Bundling**: Astro v6.0.1 includes improved bundling and tree-shaking to minimize client-side code, with enhanced hydration strategies and faster component rendering.
+4. **Efficient Bundling**: Astro v7.4.13 includes improved bundling and tree-shaking to minimize client-side code, with enhanced hydration strategies and faster component rendering.
 
 5. **Cloudflare CDN**: The site uses Cloudflare's CDN with custom cache headers to serve content from edge locations worldwide.
 
-6. **Tailwind Optimizations**: Tailwind CSS v4.1.17's improved performance and lighter bundle size help pages load quickly.
+6. **Tailwind Optimizations**: Tailwind CSS v4.3.5's improved performance and lighter bundle size help pages load quickly.
 
 ## Search Functionality
 
@@ -660,7 +660,7 @@ While the site is currently in English, I've structured it with future translati
    - The Astro Prettier plugin (prettier-plugin-astro v0.14.1) properly formats .astro files
 
 4. **Tailwind CSS v4**:
-   - The latest Tailwind CSS v4.1.17 with better performance and smaller bundles
+   - The latest Tailwind CSS v4.3.5 with better performance and smaller bundles
    - Configured with the typography plugin for long-form content
 
 ## CI/CD Workflow
@@ -702,8 +702,8 @@ To start working with this project:
    ```
 
    This installs:
-   - Astro v6.0.1
-   - Tailwind CSS v4.1.17
+   - Astro v7.4.13
+   - Tailwind CSS v4.3.5
    - React v19.2.1
    - MDX v4.3.13 and other dependencies
 
