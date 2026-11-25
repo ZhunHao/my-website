@@ -14,13 +14,13 @@ const { contacts } = Astro.props;
 
 // Map the icon names to mdi icon names
 const getIconName = (iconKey: string) => {
-  const iconMap = {
+  const iconMap: Record<string, string> = {
     mail: "mdi:email",
     website: "mdi:web",
     linkedin: "simple-icons:linkedin",
     github: "simple-icons:github",
   };
-  return iconMap[iconKey] || `mdi:${iconKey}`;
+  return iconMap[iconKey] ?? `mdi:${iconKey}`;
 };
 ---
 
