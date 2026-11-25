@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ThemeToggle from "../components/ThemeToggle";
+import { SOCIAL_LINKS } from "../consts";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -41,8 +42,8 @@ const personSchema = {
   jobTitle: "Engineer",
   url: new URL(Astro.url.pathname, Astro.site).href,
   sameAs: [
-    "https://github.com/wongzhunhao",
-    "https://linkedin.com/in/wongzhunhao",
+    SOCIAL_LINKS.github,
+    SOCIAL_LINKS.linkedin,
     "https://wongzhunhao.com",
   ],
   workLocation: { "@type": "Place", name: "NTU" },
