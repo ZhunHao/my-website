@@ -45,7 +45,7 @@ const baseSchema = z.object({
 });
 
 const short_form = defineCollection({
-  // Modern Astro v6.0.1 collection pattern
+  // Modern Astro v7.4.13 collection pattern
   loader: glob({
     pattern: "**\/[^_]*.mdx",
     base: "./src/content/astrophotography",
@@ -76,7 +76,7 @@ description: A photographic capture and analysis of the geometric luminous 22-de
 <!-- Content goes here -->
 ```
 
-## Astro v6.0.1 Enhancements
+## Astro v7.4.13 Enhancements
 
 The content collections in this project use Astro's modern glob loader pattern. The key benefits include:
 
